@@ -5,11 +5,11 @@ import subprocess
 
 def __init__():
     python = "#!/home/egor/projects/slackk_bot/slack_bot/bin/python3"
-    print(subprocess.Popen(['/bin/sh', 'python3 -m venv slack_bot;'
+    print(subprocess.Popen('python3 -m venv slack_bot;'
                      '. ~/projects/slackk_bot/slack_bot/bin/activate;'
                      'pip install --upgrade pip;'
                      'pip install -r requirements.txt;'
-                     'chmod +x ~/projects/slackk_bot/main.py'], shell=True,
+                     'chmod +x ~/projects/slackk_bot/main.py', shell=True,
                            stdout=subprocess.PIPE, env=os.environ).stdout.read().decode('utf-8'))
     edited_file = "main.py.bak"
     main_file = "main.py"
