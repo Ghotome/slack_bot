@@ -16,7 +16,7 @@ app = App(
     signing_secret=settings.SLACK_SIGNING_SECRET,
 )
 
-''
+
 @app.event("app_home_opened")
 def open_home_tab(event):
     log.warning(event)
