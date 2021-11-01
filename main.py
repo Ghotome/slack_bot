@@ -192,9 +192,10 @@ def action_missed_calls(ack, action):
 def action_missed_calls(ack, action):
     ack()
     log.warning(action)
-    message_body = (f"Основной функционал бота:\n"
-                    f"На главвной странице несколько кнопок, они возвращают в личку то, что на них написано\n"
-                    f"В меню бота так же есть несколько кнопок, та 01.11.21 - только Speedtest")
+    message_body = (f"*Основной функционал бота:*\n"
+                    f"На главной странице несколько кнопок, они возвращают в личку то, что на них написано\n"
+                    f"В меню бота так же есть несколько кнопок, та 01.11.21 - только Speedtest"
+                    f"\nМеню бота доступно по нажатию на :zap: возле поля для ввода.")
     result = send_message(channel=user, body=message_body, blocks='', color='FF0000')
     log.warning(result)
 
