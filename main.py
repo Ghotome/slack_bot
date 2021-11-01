@@ -107,14 +107,14 @@ def action_submission(ack, body):
     log.warning(body)
     user_id = body['user']['id']
     user_response_key = list(body['view']['state']['values'])[-1]
-    if body['view']['state']['values'][user_response_key]['select_bras_speedtest']:
+    if "select_bras_speedtest" in body['view']['state']['values'][user_response_key]:
         user_choise = \
             body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text']['text']
         image = requests.get(settings.images_links['speedtests'].format(user_choise),
                              headers=settings.api_tokens['grafana']['auth']).content
         result = functions.send_photo(user_id, image, client=client, log=log)
         log.warning(result)
-    elif body['view']['state']['values'][user_response_key]['login_input']:
+    elif "login_input" in body['view']['state']['values'][user_response_key]:
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         message_body = functions.get_user_info(user_input)
         log.warning(message_body)
