@@ -3,11 +3,7 @@ import os
 
 def __init__():
     python = "#!/home/egor/projects/slackk_bot/slack_bot/bin/python3"
-    command  = os.system('python3 -m venv slack_bot && '
-              'source ./slack_bot/bin/activate && '
-              'pip install --upgrade pip && '
-              'pip install -r requirements.txt && '
-              'chmod +x ./main.py')
+    command = os.system('python3 -m venv slack_bot && source ./slack_bot/bin/activate && pip install --upgrade pip && pip install -r requirements.txt && chmod +x ./main.py')
     print(command)
     edited_file = "main.py.bak"
     main_file = "main.py"
