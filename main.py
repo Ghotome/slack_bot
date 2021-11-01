@@ -96,7 +96,7 @@ def render_modal_user_info(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=modals.speedtests_bras_select_modal
+        view=modals.get_user_info_modal
     )
     log.warning(result)
 
