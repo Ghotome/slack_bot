@@ -2,8 +2,7 @@
 import logging
 import traceback
 
-import slack_bolt.context
-from views import modals
+from views import views
 from functions import functions
 import requests
 from slack_bolt import App
@@ -26,7 +25,7 @@ def open_home_tab(event):
     try:
         client.views_publish(
             user_id=event['user'],
-            view=modals.slack_home_tab
+            view=views.slack_home_tab
         )
 
         user = event['user']
@@ -38,14 +37,13 @@ def open_home_tab(event):
 @app.action('home_page')
 def return_to_home_page(ack):
     ack()
-    functions.update_home_tab(tab=modals.slack_home_tab, user_id=user, client=client, log=log)
+    functions.update_home_tab(tab=views.slack_home_tab, user_id=user, client=client, log=log)
 
 
 @app.action('triggers')
 def return_triggers_list(action, ack):
     ack()
-    app.logger.warning(action)
-    log.warning(slack_bolt.context.BoltContext.user_id.getter)
+    log.warning(action)
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
@@ -89,7 +87,7 @@ def render_modal_speedtests(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=modals.speedtests_bras_select_modal
+        view=views.speedtests_bras_select_modal
     )
     log.warning(result)
 
@@ -100,7 +98,7 @@ def render_modal_user_info(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=modals.get_user_info_modal
+        view=views.get_user_info_modal
     )
     log.warning(result)
 
