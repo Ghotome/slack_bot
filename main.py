@@ -2,12 +2,13 @@
 import logging
 import traceback
 
-from views import views
-from functions import functions
 import requests
 from slack_bolt import App
 from slack_sdk import WebClient
+
 import settings
+from functions import functions
+from views import views
 
 log = logging.getLogger(__name__)
 client = WebClient(token=settings.SLACK_BOT_TOKEN)
@@ -68,7 +69,8 @@ def send_subscriber_info(ack, action):
                         f"*Статус ОНУ:* {subscriber_data['onu_status']}\n"
                         f"*Показания ОНУ:* {subscriber_data['onu_attenuation']}\n"
                         f"*Позиция ОНУ:* {subscriber_data['onu_position']}\n")
-        result = functions.send_message(body=message_body, channel=user, blocks='', color='00FFF7', client=client, log=log)
+        result = functions.send_message(body=message_body, channel=user, blocks='', color='00FFF7', client=client,
+                                        log=log)
         log.warning(result)
         ack()
 
@@ -98,7 +100,7 @@ def render_modal_user_info(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=views.get_user_info_modal
+        view=views.input_user_login_modal
     )
     log.warning(result)
 
@@ -108,10 +110,12 @@ def action_submission(ack, body):
     ack()
     log.warning(body)
     user_id = body['user']['id']
+    trigger_id = body['trigger_id']
     user_response_key = list(body['view']['state']['values'])[-1]
     if "select_bras_speedtest" in body['view']['state']['values'][user_response_key]:
         user_choise = \
-            body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text']['text']
+            body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text'][
+                'text']
         image = requests.get(settings.images_links['speedtests'].format(user_choise),
                              headers=settings.api_tokens['grafana']['auth']).content
         result = functions.send_photo(user_id, image, client=client, log=log)
@@ -119,8 +123,11 @@ def action_submission(ack, body):
     elif "login_input" in body['view']['state']['values'][user_response_key]:
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         message_body = functions.get_user_info(user_input)
-        log.warning(message_body)
-        result = functions.send_message(message_body, user_input, client=client, log=log, color='000FFF', blocks='')
+        user_info_modal = views.render_user_info_modal(message_body, user_input)
+        result = client.views_open(
+            trigger_id=trigger_id,
+            view=user_info_modal
+        )
         log.warning(result)
 
 
@@ -149,10 +156,27 @@ def action_missed_calls(ack, action):
     ack()
     log.warning(action)
     message_body = (f"*Основной функционал бота:*\n"
-                    f"На главной странице несколько кнопок, они возвращают в личку то, что на них написано\n"
-                    f"В меню бота так же есть несколько кнопок, та 01.11.21 - только Speedtest"
-                    f"\nМеню бота доступно по нажатию на :zap: возле поля для ввода.")
+                    f"На главной странице несколько кнопок, это основные и часто используемые запросы.\n"
+                    f"\nМеню бота доступно по нажатию на :zap: возле поля для ввода."
+                    f"\n\nДоступные взаимодействия с ботом: \n"
+                    f"  - Speedtests BRAS - открывает селектор, в котором можно выбрать брас и посмотреть "
+                    f"графики speedtest за ним;"
+                    f"\n - Информация по логину - открывает окно, в нём нужно ввести логин абонента и в ответ"
+                    f"получите основную информацию по нему, есть аналогичная команда."
+                    f"\n\nДоступные команды:\n  - /user_info - открывает окно, в котором нужно ввести логин абонента, "
+                    f"в ответ получите основную информацию по нему;")
     result = functions.send_message(channel=user, body=message_body, blocks='', color='FF0000', client=client, log=log)
+    log.warning(result)
+
+
+@app.command("/user_info")
+def command_user_info(ack, body):
+    ack()
+    log.info(body)
+    result = client.views_open(
+        trigger_id=body['trigger_id'],
+        view=views.speedtests_bras_select_modal
+    )
     log.warning(result)
 
 

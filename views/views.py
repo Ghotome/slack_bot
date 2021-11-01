@@ -65,7 +65,7 @@ slack_home_tab = json.dumps(
     }
 )
 
-get_user_info_modal = json.dumps(
+input_user_login_modal = json.dumps(
     {
         "type": "modal",
         "title": {
@@ -195,3 +195,31 @@ def render_triggers_page(body):
         }
     )
     return slack_home_tabb_triggers
+
+
+def render_user_info_modal(body, subscriber):
+    user_info_modal = json.dumps(
+        {
+            "type": "modal",
+            "title": {
+                "type": "plain_text",
+                "text": f"Абонент {subscriber}",
+                "emoji": True
+            },
+            "close": {
+                "type": "plain_text",
+                "text": "Закрыть",
+                "emoji": True
+            },
+            "blocks": [
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"{body}"
+                    }
+                }
+            ]
+        }
+    )
+    return user_info_modal
