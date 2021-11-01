@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 import logging
-import re
 import traceback
 
 import requests
@@ -37,8 +36,11 @@ def zabbix_login(url: str):
 
 def update_home_tab(tab, user_id):
     try:
+        # views.publish is the method that your app uses to push a view to the Home tab
         client.views_publish(
+            # the user that opened your app's app home
             user_id=user_id,
+            # the view object that appears in the app home
             view=tab
         )
 
@@ -53,7 +55,7 @@ def send_photo(channel, file):
             file=file,
         )
         log.warning(result)
-
+        return result
     except SlackApiError as e:
         log.error("Error uploading file: {}".format(e))
 
@@ -100,7 +102,7 @@ def send_message(body: str, channel: str, blocks):
         log.error(f'API raised an error: {traceback.format_exc(error)}')
 
 
-@app.block_action(constraints='')
+@app.action('triggers')
 def return_triggers_list(action, ack):
     ack()
     log.warning(action)
@@ -139,6 +141,7 @@ def action_uplinks(ack, action):
     image = requests.get(settings.images_links['uplinks'], headers=settings.api_tokens['grafana']['auth']).content
     send_photo(user, image)
 
+
 @app.shortcut('open_modal_speedtests')
 def render_modal_speedtests(ack, shortcut):
     ack()
@@ -149,18 +152,21 @@ def render_modal_speedtests(ack, shortcut):
     )
     log.warning(result)
 
+
 @app.view_submission("")
 def action_speedtest(ack, body):
     ack()
     log.warning(body)
     user_id = body['user']['id']
-    user_respose_key = list(body['view']['state']['values'])[-1]
-    if body['view']['state']['values'][user_respose_key]['select_bras_speedtest']:
-        user_choise = body['view']['state']['values'][user_respose_key]['select_bras_speedtest']['selected_option']['text']['text']
+    user_response_key = list(body['view']['state']['values'])[-1]
+    if body['view']['state']['values'][user_response_key]['select_bras_speedtest']:
+        user_choise = \
+            body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text']['text']
         image = requests.get(settings.images_links['speedtests'].format(user_choise),
                              headers=settings.api_tokens['grafana']['auth']).content
         result = send_photo(user_id, image)
         log.warning(result)
+
 
 if __name__ == "__main__":
     app.start()
