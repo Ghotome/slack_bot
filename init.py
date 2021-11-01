@@ -10,7 +10,7 @@ def __init__():
                      'pip install --upgrade pip && '
                      'pip install -r requirements.txt'), shell=True,
                            stdout=subprocess.PIPE, env=os.environ).stdout.read().decode('utf-8'))
-    print(subprocess.Popen(["chmod", "+x", "~/projects/slackk_bot/main.py"],
+    print(subprocess.Popen(["chmod", "+x", "./main.py"],
                            stdout=subprocess.PIPE).stdout.read().decode('utf-8'))
     edited_file = "main.py.bak"
     main_file = "main.py"
