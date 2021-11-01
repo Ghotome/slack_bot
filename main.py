@@ -175,7 +175,7 @@ def command_user_info(ack, body):
     log.info(body)
     result = client.views_open(
         trigger_id=body['trigger_id'],
-        view=views.speedtests_bras_select_modal
+        view=views.input_user_login_modal
     )
     log.warning(result)
 
