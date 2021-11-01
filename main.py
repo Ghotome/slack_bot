@@ -82,13 +82,13 @@ def return_to_home_page(ack):
     update_home_tab(tab=settings.slack_home_tab, user_id=user)
 
 
-def send_message(body: str, channel: str, blocks):
+def send_message(body: str, channel: str, blocks, color: str):
     try:
         if blocks != '':
             result = client.chat_postMessage(
                 channel=channel,
                 text=f'<@{channel}>, ваш запрос обработан:',
-                attachments=json.dumps([{'color': '#FF0000', 'text': f'{body}'}]),
+                attachments=json.dumps([{'color': f'#{color}', 'text': f'{body}'}]),
                 blocks=blocks
             )
         else:
@@ -109,7 +109,7 @@ def return_triggers_list(action, ack):
     auth = zabbix_login(settings.ZABBIX_API_URL)
     result = settings.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
-    slack_message = send_message(body=result, channel=user, blocks='')
+    slack_message = send_message(body=result, channel=user, blocks='', color='0013FF')
     log.warning(slack_message)
 
 
@@ -129,7 +129,7 @@ def send_subscriber_info(ack, action):
                         f"*Статус ОНУ:* {subscriber_data['onu_status']}\n"
                         f"*Показания ОНУ:* {subscriber_data['onu_attenuation']}\n"
                         f"*Позиция ОНУ:* {subscriber_data['onu_position']}\n")
-        result = send_message(body=message_body, channel=user, blocks='')
+        result = send_message(body=message_body, channel=user, blocks='', color='00FFF7')
         log.warning(result)
         ack()
 
@@ -166,6 +166,37 @@ def action_speedtest(ack, body):
                              headers=settings.api_tokens['grafana']['auth']).content
         result = send_photo(user_id, image)
         log.warning(result)
+
+
+@app.action('fuel')
+def action_fuel(ack, action):
+    ack()
+    log.warning(action)
+    image = requests.get(settings.images_links['fuel'],
+                         headers=settings.api_tokens['grafana']['auth']).content
+    message = send_photo(user, image)
+    log.warning(message)
+
+
+@app.action('missed_calls')
+def action_missed_calls(ack, action):
+    ack()
+    log.warning(action)
+    image = requests.get(settings.images_links['missed_calls'],
+                         headers=settings.api_tokens['grafana']['auth']).content
+    message = send_photo(user, image)
+    log.warning(message)
+
+
+@app.action('faq')
+def action_missed_calls(ack, action):
+    ack()
+    log.warning(action)
+    message_body = (f"Основной функционал бота:\n"
+                    f"На главвной странице несколько кнопок, они возвращают в личку то, что на них написано\n"
+                    f"В меню бота так же есть несколько кнопок, та 01.11.21 - только Speedtest")
+    result = send_message(channel=user, body=message_body, blocks='', color='FF0000')
+    log.warning(result)
 
 
 if __name__ == "__main__":

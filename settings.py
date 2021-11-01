@@ -29,7 +29,8 @@ api_tokens = {
 images_links = {
     'uplinks': "https://graf.dianet.online/render/d-solo/qqAdGUv7z/home-page?orgId=1&from=now&to=now-24h&panelId=2&width=1100&height=400&tz=Europe%2FZaporozhye",
     'fuel': "https://graf.dianet.online/render/d-solo/Sarw7vlMk/fuel-level?orgId=1&from=now&to=now-24h&panelId=2&width=1000&height=500&tz=Europe%2FZaporozhye",
-    'speedtests': "https://graf.dianet.online/render/d-solo/qqAdGUv7z/home-page?orgId=1&var-brass={}&from=now&to=now-24h&panelId=20&width=1000&height=500&tz=Europe%2FZaporozhye"
+    'speedtests': "https://graf.dianet.online/render/d-solo/qqAdGUv7z/home-page?orgId=1&var-brass={}&from=now&to=now-24h&panelId=20&width=1000&height=500&tz=Europe%2FZaporozhye",
+    'missed_calls': 'https://graf.dianet.online/render/d-solo/cHENmG8Mk/asterisk?orgId=1&from=now&to=now&panelId=2&width=800&height=1000&tz=Europe%2FZaporozhye'
 }
 slack_home_tab = json.dumps(
     {
@@ -82,12 +83,12 @@ slack_home_tab = json.dumps(
                         "type": "button",
                         "text": {
                             "type": "plain_text",
-                            "text": "Speedtests BRAS",
+                            "text": "FAQ",
                             "emoji": True
                         },
                         "style": "primary",
                         "value": "click_me_123",
-                        "action_id": "speedtests"
+                        "action_id": "faq"
                     }
                 ]
             },
