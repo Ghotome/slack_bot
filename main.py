@@ -46,8 +46,7 @@ def return_to_home_page(ack):
 def return_triggers_list(action, ack):
     ack()
     log.warning(action)
-    log.warning(slack_bolt.response.BoltResponse.body)
-    log.warning(slack_bolt.response.BoltResponse.status)
+    log.warning(slack_bolt.context.BoltContext.user_id)
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
