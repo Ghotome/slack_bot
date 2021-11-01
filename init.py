@@ -8,9 +8,10 @@ def __init__():
     print(subprocess.Popen(('python3 -m venv slack_bot && '
                      '. ~/projects/slackk_bot/slack_bot/bin/activate && '
                      'pip install --upgrade pip && '
-                     'pip install -r requirements.txt; '
-                     'chmod +x ~/projects/slackk_bot/main.py'), shell=True,
+                     'pip install -r requirements.txt'), shell=True,
                            stdout=subprocess.PIPE, env=os.environ).stdout.read().decode('utf-8'))
+    print(subprocess.Popen(["chmod", "+x", "~/projects/slackk_bot/main.py"],
+                           stdout=subprocess.PIPE).stdout.read().decode('utf-8'))
     edited_file = "main.py.bak"
     main_file = "main.py"
     with open(main_file, 'r') as read_object, open(edited_file, 'w') as write_object:
