@@ -42,13 +42,14 @@ def return_to_home_page(ack):
 
 
 @app.action('triggers')
-def return_triggers_list(action, ack, logger):
+def return_triggers_list(action, ack):
     ack()
-    logger.warning(action)
+    app.logger.warning(action)
     log.warning(slack_bolt.context.BoltContext.user_id.getter)
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
+
     slack_message = functions.send_message(body=result, channel=user, blocks='', color='0013FF', client=client, log=log)
     log.warning(slack_message)
 
