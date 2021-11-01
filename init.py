@@ -7,7 +7,7 @@ def __init__():
               'source ./slack_bot/bin/activate | '
               'pip install --upgrade pip | '
               'pip install -r requirements.txt | '
-              'chmod +x main.py')
+              'chmod +x ./main.py')
     edited_file = "main.py.bak"
     main_file = "main.py"
     with open(main_file, 'r') as read_object, open(edited_file, 'w') as write_object:
