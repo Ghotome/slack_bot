@@ -47,7 +47,6 @@ def return_triggers_list(action, ack):
     ack()
     log.warning(action)
     log.warning(slack_bolt.context.BoltContext)
-    log.warning(slack_bolt.request.BoltRequest.body)
     log.warning(slack_bolt.request.BoltRequest.context)
     log.warning(slack_bolt.response.BoltResponse.body)
     log.warning(slack_bolt.response.BoltResponse.status)
