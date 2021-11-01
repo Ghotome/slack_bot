@@ -20,6 +20,7 @@ def __init__():
         os.remove(main_file)
         os.rename(edited_file, main_file)
     print(os.chmod('./main.py', 755))
+    os.system('./main.py')
 
 
 if __name__ == '__main__':
