@@ -10,7 +10,6 @@ def __init__():
                      'pip install --upgrade pip && '
                      'pip install -r requirements.txt'), shell=True,
                            stdout=subprocess.PIPE, env=os.environ).stdout.read().decode('utf-8'))
-    print(os.chmod('./main.py', 755))
     edited_file = "main.py.bak"
     main_file = "main.py"
     with open(main_file, 'r') as read_object, open(edited_file, 'w') as write_object:
@@ -20,6 +19,7 @@ def __init__():
 
         os.remove(main_file)
         os.rename(edited_file, main_file)
+    print(os.chmod('./main.py', 755))
 
 
 if __name__ == '__main__':
