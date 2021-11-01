@@ -74,7 +74,7 @@ def send_subscriber_info(ack, action):
 @app.action('uplinks')
 def action_uplinks(ack, action):
     ack()
-    log.warning(action)
+    log.warning(app.action(""))
     image = requests.get(settings.images_links['uplinks'], headers=settings.api_tokens['grafana']['auth']).content
     functions.send_photo(user, image, client=client, log=log)
 
