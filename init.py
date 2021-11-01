@@ -4,7 +4,7 @@ import subprocess
 
 
 def __init__():
-    python = "#!/home/egor/projects/slackk_bot/slack_bot/bin/python3"
+    python = "#!/home/fishhead/projects/slackk_bot/slack_bot/bin/python3"
     print(subprocess.Popen(('python3 -m venv slack_bot && '
                      '. ~/projects/slackk_bot/slack_bot/bin/activate && '
                      'pip install --upgrade pip && '
