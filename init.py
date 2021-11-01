@@ -10,7 +10,7 @@ def __init__():
                      'pip install --upgrade pip;'
                      'pip install -r requirements.txt;'
                      'deactivate;'
-                     'chmod +x main.py', shell=True, stdout=subprocess.PIPE).stdout.read())
+                     'chmod +x ~/projects/slackk_bot/main.py', shell=True, stdout=subprocess.PIPE).stdout.read())
     edited_file = "main.py.bak"
     main_file = "main.py"
     with open(main_file, 'r') as read_object, open(edited_file, 'w') as write_object:
