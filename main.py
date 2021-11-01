@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging
 import traceback
+
+import slack_bolt.context
+
 from views import modals
 from functions import functions
 import requests
@@ -43,8 +46,11 @@ def return_to_home_page(ack):
 def return_triggers_list(action, ack):
     ack()
     log.warning(action)
-    log.warning(app.action(""))
-    log.warning(ack)
+    log.warning(slack_bolt.context.BoltContext)
+    log.warning(slack_bolt.request.BoltRequest.body)
+    log.warning(slack_bolt.request.BoltRequest.context)
+    log.warning(slack_bolt.response.BoltResponse.body)
+    log.warning(slack_bolt.response.BoltResponse.status)
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
