@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
 import traceback
-
+from views import modals
+from functions import functions
 import requests
 from slack_bolt import App
 from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
-
 import settings
 
 log = logging.getLogger(__name__)
@@ -18,48 +16,7 @@ app = App(
     signing_secret=settings.SLACK_SIGNING_SECRET,
 )
 
-
-def zabbix_login(url: str):
-    login = requests.post(url,
-                          json={
-                              "jsonrpc": "2.0",
-                              "method": "user.login",
-                              "params": {
-                                  "user": settings.USERNAME,
-                                  "password": settings.PASSWORD},
-                              "id": 1
-                          })
-
-    auth = login.json()['result']
-    return auth
-
-
-def update_home_tab(tab, user_id):
-    try:
-        # views.publish is the method that your app uses to push a view to the Home tab
-        client.views_publish(
-            # the user that opened your app's app home
-            user_id=user_id,
-            # the view object that appears in the app home
-            view=tab
-        )
-
-    except Exception as e:
-        log.error(f"Error updating home tab: {traceback.format_exc(e)}")
-
-
-def send_photo(channel, file):
-    try:
-        result = client.files_upload(
-            channels=channel,
-            file=file,
-        )
-        log.warning(result)
-        return result
-    except SlackApiError as e:
-        log.error("Error uploading file: {}".format(e))
-
-
+''
 @app.event("app_home_opened")
 def open_home_tab(event):
     log.warning(event)
@@ -67,7 +24,7 @@ def open_home_tab(event):
     try:
         client.views_publish(
             user_id=event['user'],
-            view=settings.slack_home_tab
+            view=modals.slack_home_tab
         )
 
         user = event['user']
@@ -79,37 +36,17 @@ def open_home_tab(event):
 @app.action('home_page')
 def return_to_home_page(ack):
     ack()
-    update_home_tab(tab=settings.slack_home_tab, user_id=user)
-
-
-def send_message(body: str, channel: str, blocks, color: str):
-    try:
-        if blocks != '':
-            result = client.chat_postMessage(
-                channel=channel,
-                text=f'<@{channel}>, ваш запрос обработан:',
-                attachments=json.dumps([{'color': f'#{color}', 'text': f'{body}'}]),
-                blocks=blocks
-            )
-        else:
-            result = client.chat_postMessage(
-                channel=channel,
-                text=f'<@{channel}>, ваш запрос обработан:',
-                attachments=json.dumps([{'color': '#FF0000', 'text': f'{body}'}]),
-            )
-        return result
-    except SlackApiError as error:
-        log.error(f'API raised an error: {traceback.format_exc(error)}')
+    functions.update_home_tab(tab=modals.slack_home_tab, user_id=user, client=client, log=log)
 
 
 @app.action('triggers')
 def return_triggers_list(action, ack):
     ack()
     log.warning(action)
-    auth = zabbix_login(settings.ZABBIX_API_URL)
-    result = settings.get_list_of_triggers(auth)
+    auth = functions.zabbix_login(settings.ZABBIX_API_URL)
+    result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
-    slack_message = send_message(body=result, channel=user, blocks='', color='0013FF')
+    slack_message = functions.send_message(body=result, channel=user, blocks='', color='0013FF', client=client, log=log)
     log.warning(slack_message)
 
 
@@ -118,7 +55,7 @@ def send_subscriber_info(ack, action):
     log.warning(action)
     if action['value'].isdecimal():
         log.warning(f'LOGIN: {action["value"]}')
-        subscriber_data = settings.get_user_info(str(action['value']))
+        subscriber_data = functions.get_user_info(str(action['value']))
         log.warning(subscriber_data)
         message_body = (f"*Логин:* {action['value']}\n"
                         f"*ФИО:* {subscriber_data['fio']}\n"
@@ -129,7 +66,7 @@ def send_subscriber_info(ack, action):
                         f"*Статус ОНУ:* {subscriber_data['onu_status']}\n"
                         f"*Показания ОНУ:* {subscriber_data['onu_attenuation']}\n"
                         f"*Позиция ОНУ:* {subscriber_data['onu_position']}\n")
-        result = send_message(body=message_body, channel=user, blocks='', color='00FFF7')
+        result = functions.send_message(body=message_body, channel=user, blocks='', color='00FFF7', client=client, log=log)
         log.warning(result)
         ack()
 
@@ -139,7 +76,7 @@ def action_uplinks(ack, action):
     ack()
     log.warning(action)
     image = requests.get(settings.images_links['uplinks'], headers=settings.api_tokens['grafana']['auth']).content
-    send_photo(user, image)
+    functions.send_photo(user, image, client=client, log=log)
 
 
 @app.shortcut('open_modal_speedtests')
@@ -148,13 +85,24 @@ def render_modal_speedtests(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=settings.speedtests_bras_select_modal
+        view=modals.speedtests_bras_select_modal
+    )
+    log.warning(result)
+
+
+@app.shortcut('open_modal_user_info')
+def render_modal_user_info(ack, shortcut):
+    ack()
+    log.warning(shortcut)
+    result = client.views_open(
+        trigger_id=shortcut['trigger_id'],
+        view=modals.speedtests_bras_select_modal
     )
     log.warning(result)
 
 
 @app.view_submission("")
-def action_speedtest(ack, body):
+def action_submission(ack, body):
     ack()
     log.warning(body)
     user_id = body['user']['id']
@@ -164,7 +112,13 @@ def action_speedtest(ack, body):
             body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text']['text']
         image = requests.get(settings.images_links['speedtests'].format(user_choise),
                              headers=settings.api_tokens['grafana']['auth']).content
-        result = send_photo(user_id, image)
+        result = functions.send_photo(user_id, image, client=client, log=log)
+        log.warning(result)
+    elif body['view']['state']['values'][user_response_key]['login_input']:
+        user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
+        message_body = functions.get_user_info(user_input)
+        log.warning(message_body)
+        result = functions.send_message(message_body, user_input, client=client, log=log, color='000FFF', blocks='')
         log.warning(result)
 
 
@@ -174,7 +128,7 @@ def action_fuel(ack, action):
     log.warning(action)
     image = requests.get(settings.images_links['fuel'],
                          headers=settings.api_tokens['grafana']['auth']).content
-    message = send_photo(user, image)
+    message = functions.send_photo(user, image, client=client, log=log)
     log.warning(message)
 
 
@@ -184,7 +138,7 @@ def action_missed_calls(ack, action):
     log.warning(action)
     image = requests.get(settings.images_links['missed_calls'],
                          headers=settings.api_tokens['grafana']['auth']).content
-    message = send_photo(user, image)
+    message = functions.send_photo(user, image, client=client, log=log)
     log.warning(message)
 
 
@@ -196,7 +150,7 @@ def action_missed_calls(ack, action):
                     f"На главной странице несколько кнопок, они возвращают в личку то, что на них написано\n"
                     f"В меню бота так же есть несколько кнопок, та 01.11.21 - только Speedtest"
                     f"\nМеню бота доступно по нажатию на :zap: возле поля для ввода.")
-    result = send_message(channel=user, body=message_body, blocks='', color='FF0000')
+    result = functions.send_message(channel=user, body=message_body, blocks='', color='FF0000', client=client, log=log)
     log.warning(result)
 
 
