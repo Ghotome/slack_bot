@@ -19,7 +19,7 @@ def __init__():
 
         os.remove(main_file)
         os.rename(edited_file, main_file)
-    print(os.chmod('./main.py', 755))
+    print(os.chmod('./main.py', 555))
     os.system('./main.py')
 
 
