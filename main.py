@@ -124,12 +124,21 @@ def action_submission(ack, body):
     elif "login_input" in body['view']['state']['values'][user_response_key]:
         log.warning(f'Reacted on login input')
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
-        message_body = functions.get_user_info(user_input)
         show_empty_modal = client.views_open(
             trigger_id=trigger_id,
             view=views.empty_modal
         )
 
+        subscriber_data = functions.get_user_info(user_input)
+        message_body = (f"*Логин:* {user_input}\n"
+                        f"*ФИО:* {subscriber_data['fio']}\n"
+                        f"*Статус учётки:* {subscriber_data['subscriber_status']}\n"
+                        f"*Адрес:* {subscriber_data['address']}\n"
+                        f"*Тариф:* {subscriber_data['tariff']}\n"
+                        f"*Статус услуги:* {subscriber_data['status']}\n"
+                        f"*Статус ОНУ:* {subscriber_data['onu_status']}\n"
+                        f"*Показания ОНУ:* {subscriber_data['onu_attenuation']}\n"
+                        f"*Позиция ОНУ:* {subscriber_data['onu_position']}\n")
         user_info_modal = views.render_user_info_modal(message_body, user_input)
         view_id = show_empty_modal['view']['id']
         result = client.views_update(
@@ -144,6 +153,16 @@ def action_fuel(ack, action):
     ack()
     log.warning(action)
     image = requests.get(settings.images_links['fuel'],
+                         headers=settings.api_tokens['grafana']['auth']).content
+    message = functions.send_photo(user, image, client=client, log=log)
+    log.warning(message)
+
+
+@app.action('temp')
+def action_fuel(ack, action):
+    ack()
+    log.warning(action)
+    image = requests.get(settings.images_links['temp'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     log.warning(message)

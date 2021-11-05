@@ -9,7 +9,7 @@ slack_home_tab = json.dumps(
                 "text": {
                     "type": "mrkdwn",
                     "text": ("*Cамые часто используемыые функции*\n"
-                             "*Для получения дополнительной информации о функционале, нажмите 'FAQ'*")
+                            "*Для получения более подробной информации о функционале бота, нажмите на _FAQ_*")
                 }
             },
             {
@@ -36,6 +36,28 @@ slack_home_tab = json.dumps(
                         "style": "primary",
                         "value": "click_me_123",
                         "action_id": "uplinks"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Уровень топлива",
+                            "emoji": True
+                        },
+                        "style": "primary",
+                        "value": "click_me_123",
+                        "action_id": "fuel"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Температура",
+                            "emoji": True
+                        },
+                        "style": "primary",
+                        "value": "click_me_123",
+                        "action_id": "temp"
                     },
                     {
                         "type": "button",
@@ -177,7 +199,7 @@ empty_modal = json.dumps(
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": ":hourglass:*Оидайте, запрос обрабатывается*"
+                    "text": ":hourglass:*Ожидайте, запрос обрабатывается*"
                 }
             },
             {
