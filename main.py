@@ -50,13 +50,29 @@ def return_triggers_list(action, ack):
     log.warning(f'User: {user}')
 
     slack_message = functions.send_message(body=('*Чтобы подтвердить/обновить проблему, '
-                                                 'нажмите на кнопку "Обнеовить прооблему"*'),
+                                                 'нажмите на кнопку "Обновить проблему"*'),
                                            channel=user,
-                                           blocks=result,
+                                           blocks=result[0]['blocks'],
                                            color='0013FF',
                                            client=client,
                                            log=log)
     log.warning(slack_message)
+
+
+@app.shortcut('ack_problem')
+def shortcut_ack_problem(ack, shortcut):
+    ack()
+    log.warning(shortcut)
+
+    auth = functions.zabbix_login(settings.ZABBIX_API_URL)
+    problems = functions.get_list_of_triggers(auth)[1]
+    options = views.render_options_problems_to_ack(problems)
+    modal = views.render_ack_problem_modal(options)
+    result = client.views_open(
+        trigger_id=shortcut['trigger_id'],
+        view=modal
+    )
+    log.warning(result)
 
 
 @app.action('login_handler')
@@ -213,9 +229,10 @@ def command_user_info(ack, body):
     log.warning(result)
 
 
-@app.action('not_an_action')
-def action_not_an_action(ack):
+@app.block_action("")
+def some(ack, body):
     ack()
+    log.warning(body)
 
 
 if __name__ == "__main__":

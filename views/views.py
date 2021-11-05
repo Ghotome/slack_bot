@@ -222,6 +222,81 @@ empty_blocks = {
 }
 
 
+def render_options_problems_to_ack(problems):
+    result = {
+        "options": []
+    }
+    for item in problems:
+        result['options'].append(
+            {
+                "text": {
+                    "type": "plain_text",
+                    "text": f"{item}",
+                    "emoji": True
+                },
+                "value": f"{problems[item]}"
+            }
+        )
+    return result
+
+
+def render_ack_problem_modal(options):
+    zabbix_problems_ack_modal = json.dumps(
+        {
+            "type": "modal",
+            "title": {
+                "type": "plain_text",
+                "text": "DiaNet ZABBIX",
+                "emoji": True
+            },
+            "submit": {
+                "type": "plain_text",
+                "text": "Готово",
+                "emoji": True
+            },
+            "close": {
+                "type": "plain_text",
+                "text": "Отмена",
+                "emoji": True
+            },
+            "blocks": [
+                {
+                    "type": "input",
+                    "element": {
+                        "type": "static_select",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "Выберите проблему для подтверждения",
+                            "emoji": True
+                        },
+                        "options": options['options'],
+                        "action_id": "problems_to_ack"
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "Текущие проблемы",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "input",
+                    "element": {
+                        "type": "plain_text_input",
+                        "multiline": True,
+                        "action_id": "plain_text_input-action"
+                    },
+                    "label": {
+                        "type": "plain_text",
+                        "text": "Введите сообщение",
+                        "emoji": True
+                    }
+                }
+            ]
+        }
+    )
+    return zabbix_problems_ack_modal
+
+
 def render_one_trigger_line(trigger: str, link: str, additional_message: str = ''):
     one_trigger_line = {
         "type": "section",

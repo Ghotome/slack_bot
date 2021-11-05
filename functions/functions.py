@@ -1,9 +1,11 @@
 import datetime
 import json
-from slack_sdk.errors import SlackApiError
+import traceback
+
 import requests
 import timeago
-import traceback
+from slack_sdk.errors import SlackApiError
+
 import settings
 import views.views
 
@@ -97,6 +99,21 @@ def get_user_info(login: str):
         return user_info
 
 
+def zabbix_event_acknowledge(auth, message, event_id):
+    event_acknowledge = {
+        "jsonrpc": "2.0",
+        "method": "event.acknowledge",
+        "params": {
+            "eventids": f"{event_id}",
+            "action": 6,
+            "message": f"{message}"
+        },
+        "auth": auth,
+        "id": 1
+    }
+    return event_acknowledge
+
+
 def get_list_of_triggers(auth):
     """
 
@@ -159,6 +176,7 @@ def get_list_of_triggers(auth):
     triggers = json.loads(all_triggers_request.content)['result']
     ack_events = json.loads(timestamps_request_all.content)['result']
     block_message = views.views.empty_blocks
+    problems = {}
 
     if not triggers:
         block_message = 'На текущий момент, список проблем пуст.'
@@ -180,8 +198,10 @@ def get_list_of_triggers(auth):
                                         f"{str(ack_event['eventid'])}")
                             message_line = f"*Проблема: {trigger['description']}*"
                             time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
-                            result = views.views.render_one_trigger_line(message_line, ack_link, f"{ack_message}\r{time}\n\n")
+                            result = views.views.render_one_trigger_line(message_line, ack_link,
+                                                                         f"{ack_message}\r{time}\n\n")
                             block_message['blocks'].append(result)
+                            problems[message_line.replace('Проблема: ', '').replace('*', '')] = ack_link.split('=')[-1]
                         else:
                             ack_link = (f"{settings.ZABBIX_URL}"
                                         f"zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]="
@@ -190,6 +210,7 @@ def get_list_of_triggers(auth):
                             time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
                             result = views.views.render_one_trigger_line(message_line, ack_link, f"{time}\n\n")
                             block_message['blocks'].append(result)
+                            problems[message_line.replace('Проблема: ', '').replace('*', '')] = ack_link.split('=')[-1]
                     else:
                         ack_link = (f"{settings.ZABBIX_URL}"
                                     f"zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]="
@@ -198,7 +219,8 @@ def get_list_of_triggers(auth):
                         time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
                         result = views.views.render_one_trigger_line(message_line, ack_link, f"{time}\n\n")
                         block_message['blocks'].append(result)
-    return block_message
+                        problems[message_line.replace('Проблема: ', '').replace('*', '')] = ack_link.split('=')[-1]
+    return block_message, problems
 
 
 def zabbix_login(url: str):
@@ -291,5 +313,3 @@ def send_message(body: str, channel: str, blocks, color: str, client, log):
         return result
     except SlackApiError as error:
         log.error(f'API raised an error: {traceback.format_exc(error)}')
-
-
