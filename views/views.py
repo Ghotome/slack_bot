@@ -164,20 +164,33 @@ empty_modal = json.dumps(
         "type": "modal",
         "title": {
             "type": "plain_text",
-            "text": "My App",
-            "emoji": True
-        },
-        "submit": {
-            "type": "plain_text",
-            "text": "Submit",
+            "text": "DiaNet",
             "emoji": True
         },
         "close": {
             "type": "plain_text",
-            "text": "Cancel",
+            "text": "Закрыть",
             "emoji": True
         },
-        "blocks": []
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":hourglass:*Оидайте, запрос обрабатывается*"
+                }
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "Должно быть быстро",
+                        "emoji": True
+                    }
+                ]
+            }
+        ]
     }
 )
 

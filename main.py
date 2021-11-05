@@ -124,11 +124,11 @@ def action_submission(ack, body):
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         message_body = functions.get_user_info(user_input)
         user_info_modal = views.render_user_info_modal(message_body, user_input)
-        show_empty_moddal = client.views_open(
+        show_empty_modal = client.views_open(
             trigger_id=trigger_id,
             view=views.empty_modal
         )
-        view_id = show_empty_moddal['view']['id']
+        view_id = show_empty_modal['view']['id']
         result = client.views_update(
             view_id=view_id,
             view=user_info_modal
