@@ -113,6 +113,7 @@ def action_submission(ack, body):
     trigger_id = body['trigger_id']
     user_response_key = list(body['view']['state']['values'])[-1]
     if "select_bras_speedtest" in body['view']['state']['values'][user_response_key]:
+        log.warning(f'Reacted speedtests request')
         user_choise = \
             body['view']['state']['values'][user_response_key]['select_bras_speedtest']['selected_option']['text'][
                 'text']
@@ -121,13 +122,15 @@ def action_submission(ack, body):
         result = functions.send_photo(user_id, image, client=client, log=log)
         log.warning(result)
     elif "login_input" in body['view']['state']['values'][user_response_key]:
+        log.warning(f'Reacted on login input')
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         message_body = functions.get_user_info(user_input)
-        user_info_modal = views.render_user_info_modal(message_body, user_input)
         show_empty_modal = client.views_open(
             trigger_id=trigger_id,
             view=views.empty_modal
         )
+
+        user_info_modal = views.render_user_info_modal(message_body, user_input)
         view_id = show_empty_modal['view']['id']
         result = client.views_update(
             view_id=view_id,
