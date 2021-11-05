@@ -306,9 +306,9 @@ def render_ack_problem_modal(options):
                 {
                     "type": "input",
                     "element": {
-                        "type": "plain_text_input",
+                        "type": "default",
                         "multiline": True,
-                        "action_id": "plain_text_input-action"
+                        "action_id": "problems_to_ack_message"
                     },
                     "label": {
                         "type": "plain_text",

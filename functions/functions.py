@@ -100,7 +100,7 @@ def get_user_info(login: str):
 
 
 def zabbix_event_acknowledge(auth, message, event_id):
-    event_acknowledge = {
+    body = {
         "jsonrpc": "2.0",
         "method": "event.acknowledge",
         "params": {
@@ -111,6 +111,7 @@ def zabbix_event_acknowledge(auth, message, event_id):
         "auth": auth,
         "id": 1
     }
+    event_acknowledge = requests.post(settings.ZABBIX_API_URL, data=body)
     return event_acknowledge
 
 

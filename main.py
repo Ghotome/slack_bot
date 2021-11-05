@@ -180,7 +180,7 @@ def action_submission(ack, body):
         trigger_id = body['trigger_id']
         zbbx_trigger_id = body['view']['state']['values'][problem_values_key]['problems_to_ack']['selected_option'][
             'value']
-        zbbx_ack_message = body['view']['state']['values'][message_key]['problems_to_ack_message']['type']
+        zbbx_ack_message = body['view']['state']['values'][message_key]['problems_to_ack_message']['value']
         problem_update = functions.zabbix_event_acknowledge(auth, message=zbbx_ack_message, event_id=zbbx_trigger_id)
         log.warning(problem_update)
         modal_succes = client.views_open(
