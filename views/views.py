@@ -221,6 +221,36 @@ empty_blocks = {
     ]
 }
 
+modal_success = json.dumps(
+    {
+        "type": "modal",
+        "title": {
+            "type": "plain_text",
+            "text": "DiaNet ZABBIX",
+            "emoji": True
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Готово",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Отмена",
+            "emoji": True
+        },
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": ":white_check_mark:_*Success*_"
+                }
+            }
+        ]
+    }
+)
+
 
 def render_options_problems_to_ack(problems):
     result = {

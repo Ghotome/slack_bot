@@ -150,7 +150,6 @@ def action_submission(ack, body):
             trigger_id=trigger_id,
             view=views.empty_modal
         )
-
         subscriber_data = functions.get_user_info(user_input)
         message_body = (f"*Логин:* {user_input}\n"
                         f"*ФИО:* {subscriber_data['fio']}\n"
@@ -168,6 +167,22 @@ def action_submission(ack, body):
             view=user_info_modal
         )
         log.warning(result)
+    elif 'problems_to_ack_message' in list(body['view']['state']['values'])[1] \
+            and 'problems_to_ack' in list(body['view']['state']['values'])[0]:
+        auth = functions.zabbix_login(settings.ZABBIX_API_URL)
+        problem_values_key = body['view']['state']['values'][0]
+        message_key = body['view']['state']['values'][1]
+        trigger_id = body['trigger_id']
+        zbbx_trigger_id = body['view']['state']['values'][problem_values_key]['problems_to_ack']['selected_option'][
+            'value']
+        zbbx_ack_message = body['view']['state']['values'][message_key]['problems_to_ack_message']['type']
+        problem_update = functions.zabbix_event_acknowledge(auth, message=zbbx_ack_message, event_id=zbbx_trigger_id)
+        log.warning(problem_update)
+        modal_succes = client.views_open(
+            trigger_id=trigger_id,
+            view=views.modal_success
+        )
+        log.warning(modal_succes)
 
 
 @app.action('fuel')
