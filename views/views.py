@@ -159,42 +159,27 @@ speedtests_bras_select_modal = json.dumps(
     }
 )
 
-
-def render_triggers_page(body):
-    slack_home_tabb_triggers = json.dumps(
-        {
-            "type": "home",
-            "callback_id": "home_view",
-            "blocks": [
-                {
-                    "type": "divider"
-                },
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": f"{body}"
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "На главную",
-                                "emoji": True
-                            },
-                            "value": "click_me_123",
-                            "action_id": "home_page"
-                        }
-                    ]
-                }
-            ]
-        }
-    )
-    return slack_home_tabb_triggers
+empty_modal = json.dumps(
+    {
+        "type": "modal",
+        "title": {
+            "type": "plain_text",
+            "text": "My App",
+            "emoji": True
+        },
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": True
+        },
+        "close": {
+            "type": "plain_text",
+            "text": "Cancel",
+            "emoji": True
+        },
+        "blocks": []
+    }
+)
 
 
 def render_user_info_modal(body, subscriber):

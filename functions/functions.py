@@ -100,7 +100,7 @@ def get_list_of_triggers(auth):
     """
 
     :param auth:
-    :return: returns STRING wich contains all triggers from zabbix, already formatted etc.
+    :return: returns STRING which contains all triggers from zabbix, already formatted etc.
     """
     all_triggers_request = requests.post(settings.ZABBIX_API_URL,
                                          json={
