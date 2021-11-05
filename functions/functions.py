@@ -5,6 +5,7 @@ import requests
 import timeago
 import traceback
 import settings
+import views.views
 
 
 def get_user_info(login: str):
@@ -157,10 +158,11 @@ def get_list_of_triggers(auth):
                                            })
     triggers = json.loads(all_triggers_request.content)['result']
     ack_events = json.loads(timestamps_request_all.content)['result']
-    result = ''
+    block_message = views.views.empty_blocks
 
     if not triggers:
-        result = 'На текущий момент, список проблем пуст.'
+        block_message = 'На текущий момент, список проблем пуст.'
+        return block_message
     else:
         for trigger in triggers:
             max_age = ""
@@ -172,30 +174,31 @@ def get_list_of_triggers(auth):
                     timestamp = (timeago.format(datetime.datetime.now(), int(max_age), 'ru'))
                     if ack_event['acknowledged'] != '0':
                         if len(ack_event['acknowledges']) >= 1 and ack_event['acknowledges'][-1]['message']:
-                            ack_message = str(ack_event['acknowledges'][-1]['message'])
+                            ack_message = f"*Комментарий:* {str(ack_event['acknowledges'][-1]['message'])}"
                             ack_link = (f"{settings.ZABBIX_URL}"
                                         f"zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]="
                                         f"{str(ack_event['eventid'])}")
-                            message_line = f"<{ack_link}|:white_check_mark:>*Проблема: {trigger['description']}*"
-                            time = f"\n*Создана:* {timestamp} назад"
-                            result += f"{message_line}\n*Комментарий:* " \
-                                      f"{ack_message}\r{time.replace('завтра', '1 день').replace('через', '')}\n\n"
+                            message_line = f"*Проблема: {trigger['description']}*"
+                            time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
+                            result = views.views.render_one_trigger_line(message_line, ack_link, f"{ack_message}\r{time}\n\n")
+                            block_message['blocks'].append(result)
                         else:
                             ack_link = (f"{settings.ZABBIX_URL}"
                                         f"zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]="
                                         f"{str(ack_event['eventid'])}")
-                            message_line = f"<{ack_link}|:white_check_mark:>*Проблема: {trigger['description']}*"
-                            time = f"\n*Создана:* {timestamp} назад"
-                            result += f"{message_line}\r{time.replace('завтра', '1 день').replace('через', '')}\n\n"
-
+                            message_line = f"*Проблема: {trigger['description']}*"
+                            time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
+                            result = views.views.render_one_trigger_line(message_line, ack_link, f"{time}\n\n")
+                            block_message['blocks'].append(result)
                     else:
                         ack_link = (f"{settings.ZABBIX_URL}"
                                     f"zabbix.php?action=popup&popup_action=acknowledge.edit&eventids[0]="
                                     f"{str(ack_event['eventid'])}")
-                        message_line = f"<{ack_link}|:x:>*Проблема: {trigger['description']}*"
-                        time = f"\n*Создана:* {timestamp} назад"
-                        result += f"{message_line}\r{time.replace('завтра', '1 день').replace('через', '')}\n\n"
-    return result
+                        message_line = f"*Проблема: {trigger['description']}*"
+                        time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
+                        result = views.views.render_one_trigger_line(message_line, ack_link, f"{time}\n\n")
+                        block_message['blocks'].append(result)
+    return block_message
 
 
 def zabbix_login(url: str):
@@ -288,3 +291,5 @@ def send_message(body: str, channel: str, blocks, color: str, client, log):
         return result
     except SlackApiError as error:
         log.error(f'API raised an error: {traceback.format_exc(error)}')
+
+

@@ -49,7 +49,13 @@ def return_triggers_list(action, ack):
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
 
-    slack_message = functions.send_message(body=result, channel=user, blocks='', color='0013FF', client=client, log=log)
+    slack_message = functions.send_message(body=('*Чтобы подтвердить/обновить проблему, '
+                                                 'нажмите на кнопку "Обнеовить прооблему"*'),
+                                           channel=user,
+                                           blocks=result,
+                                           color='0013FF',
+                                           client=client,
+                                           log=log)
     log.warning(slack_message)
 
 
@@ -205,6 +211,11 @@ def command_user_info(ack, body):
         view=views.input_user_login_modal
     )
     log.warning(result)
+
+
+@app.action('not_an_action')
+def action_not_an_action(ack):
+    ack()
 
 
 if __name__ == "__main__":

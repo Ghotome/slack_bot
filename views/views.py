@@ -9,7 +9,7 @@ slack_home_tab = json.dumps(
                 "text": {
                     "type": "mrkdwn",
                     "text": ("*Cамые часто используемыые функции*\n"
-                            "*Для получения более подробной информации о функционале бота, нажмите на _FAQ_*")
+                             "*Для получения более подробной информации о функционале бота, нажмите на _FAQ_*")
                 }
             },
             {
@@ -215,6 +215,33 @@ empty_modal = json.dumps(
         ]
     }
 )
+
+empty_blocks = {
+    "blocks": [
+    ]
+}
+
+
+def render_one_trigger_line(trigger: str, link: str, additional_message: str = ''):
+    one_trigger_line = {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": f":warning:<{link}|{trigger}>\r{additional_message}"
+        },
+        "accessory": {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "Обновить проблему",
+                "emoji": True
+            },
+            "value": "not_an_action",
+            "action_id": "not_an_action",
+            "url": f"{link}"
+        }
+    }
+    return one_trigger_line
 
 
 def render_user_info_modal(body, subscriber):
