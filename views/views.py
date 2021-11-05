@@ -229,14 +229,9 @@ modal_success = json.dumps(
             "text": "DiaNet ZABBIX",
             "emoji": True
         },
-        "submit": {
-            "type": "plain_text",
-            "text": "Готово",
-            "emoji": True
-        },
         "close": {
             "type": "plain_text",
-            "text": "Отмена",
+            "text": "Закрыть",
             "emoji": True
         },
         "blocks": [

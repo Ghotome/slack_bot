@@ -64,12 +64,17 @@ def shortcut_ack_problem(ack, shortcut):
     ack()
     log.warning(shortcut)
 
+    modal_waiting = client.views_open(
+        trigger_id=shortcut['trigger_id'],
+        view=views.empty_modal
+    )
+    view_id = modal_waiting['view']['id']
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     problems = functions.get_list_of_triggers(auth)[1]
     options = views.render_options_problems_to_ack(problems)
     modal = views.render_ack_problem_modal(options)
-    result = client.views_open(
-        trigger_id=shortcut['trigger_id'],
+    result = client.views_update(
+        view_id=view_id,
         view=modal
     )
     log.warning(result)
@@ -167,11 +172,11 @@ def action_submission(ack, body):
             view=user_info_modal
         )
         log.warning(result)
-    elif 'problems_to_ack_message' in list(body['view']['state']['values'])[1] \
-            and 'problems_to_ack' in list(body['view']['state']['values'])[0]:
+    elif len(list(body['view']['state']['values'])) == 2:
         auth = functions.zabbix_login(settings.ZABBIX_API_URL)
-        problem_values_key = body['view']['state']['values'][0]
-        message_key = body['view']['state']['values'][1]
+        problem_values_key = list(body['view']['state']['values'])[0]
+        message_key = list(body['view']['state']['values'])[1]
+        log.warning(problem_values_key, message_key)
         trigger_id = body['trigger_id']
         zbbx_trigger_id = body['view']['state']['values'][problem_values_key]['problems_to_ack']['selected_option'][
             'value']
