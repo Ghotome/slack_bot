@@ -228,16 +228,7 @@ def action_missed_calls(ack, action):
 def action_missed_calls(ack, action):
     ack()
     log.warning(action)
-    message_body = (f"*Основной функционал бота:*\n"
-                    f"На главной странице несколько кнопок, это основные и часто используемые запросы.\n"
-                    f"\nМеню бота доступно по нажатию на :zap: возле поля для ввода."
-                    f"\n\nДоступные взаимодействия с ботом: \n"
-                    f"  - Speedtests BRAS - открывает селектор, в котором можно выбрать брас и посмотреть "
-                    f"графики speedtest за ним;"
-                    f"\n - Информация по логину - открывает окно, в нём нужно ввести логин абонента и в ответ"
-                    f"получите основную информацию по нему, есть аналогичная команда."
-                    f"\n\nДоступные команды:\n  - /user_info - открывает окно, в котором нужно ввести логин абонента, "
-                    f"в ответ получите основную информацию по нему;")
+    message_body = views.render_faq_message()
     result = functions.send_message(channel=user, body=message_body, blocks='', color='FF0000', client=client, log=log)
     log.warning(result)
 
