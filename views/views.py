@@ -306,7 +306,7 @@ def render_ack_problem_modal(options):
                 {
                     "type": "input",
                     "element": {
-                        "type": "default",
+                        "type": "plain_text_input",
                         "multiline": True,
                         "action_id": "problems_to_ack_message"
                     },
@@ -327,7 +327,7 @@ def render_one_trigger_line(trigger: str, link: str, additional_message: str = '
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f":warning:<{link}|{trigger}>\r{additional_message}"
+            "text": f"<{link}|{trigger}>\r{additional_message}"
         },
         "accessory": {
             "type": "button",

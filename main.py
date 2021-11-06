@@ -49,13 +49,10 @@ def return_triggers_list(action, ack):
     result = functions.get_list_of_triggers(auth)
     log.warning(f'User: {user}')
 
-    slack_message = functions.send_message(body=('*Чтобы подтвердить/обновить проблему, '
-                                                 'нажмите на кнопку "Обновить проблему"*'),
-                                           channel=user,
-                                           blocks=result[0]['blocks'],
-                                           color='0013FF',
-                                           client=client,
-                                           log=log)
+    slack_message = client.chat_postMessage(
+        channel=user,
+        attachments=[{"color": 'f2c744', 'blocks': result['blocks']}]
+    )
     log.warning(slack_message)
 
 
