@@ -262,7 +262,7 @@ def render_author():
             ]
         }
     )
-    return author
+    return [author]
 
 
 def render_empy_blocks_sample():
