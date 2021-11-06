@@ -229,7 +229,7 @@ def action_missed_calls(ack, action):
     ack()
     log.warning(action)
     message_body = views.render_faq_message()
-    result = functions.send_message(channel=user, body=message_body, blocks='', color='FF0000', client=client, log=log)
+    result = functions.send_message(channel=user, body=message_body, blocks='', color='D9EA49', client=client, log=log)
     log.warning(result)
 
 
