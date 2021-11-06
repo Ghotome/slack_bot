@@ -121,6 +121,7 @@ def get_list_of_triggers(auth):
     :param auth:
     :return: returns STRING which contains all triggers from zabbix, already formatted etc.
     """
+
     all_triggers_request = requests.post(settings.ZABBIX_API_URL,
                                          json={
                                              "jsonrpc": "2.0",
@@ -176,11 +177,11 @@ def get_list_of_triggers(auth):
                                            })
     triggers = json.loads(all_triggers_request.content)['result']
     ack_events = json.loads(timestamps_request_all.content)['result']
-    block_message = views.empty_blocks
+    block_message = views.render_empy_blocks_sample()
     problems = {}
 
     if not triggers:
-        block_message = 'На текущий момент, список проблем пуст.'
+        block_message['blocks'].append('Список проблем пуст.')
         return block_message
     else:
         for trigger in triggers:
@@ -224,7 +225,7 @@ def get_list_of_triggers(auth):
                         block_message['blocks'].append(result)
                         problems[message_line.replace(':x:*Проблема: ', ':x:')
                             .replace('*', '')] = ack_link.split('=')[-1]
-    return block_message, problems
+        return block_message, problems
 
 
 def zabbix_login(url: str):

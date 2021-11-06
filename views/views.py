@@ -1,6 +1,8 @@
 import json
 
-slack_home_tab = json.dumps(
+
+def render_home_tab():
+    slack_home_tab = json.dumps(
     {
         "type": "home",
         "blocks": [
@@ -85,9 +87,12 @@ slack_home_tab = json.dumps(
             }
         ]
     }
-)
+    )
+    return slack_home_tab
 
-input_user_login_modal = json.dumps(
+
+def render_input_user_login_modal():
+    input_user_login_modal = json.dumps(
     {
         "type": "modal",
         "title": {
@@ -121,9 +126,12 @@ input_user_login_modal = json.dumps(
             }
         ]
     }
-)
+    )
+    return input_user_login_modal
 
-speedtests_bras_select_modal = json.dumps(
+
+def render_speedtests_modal():
+    speedtests_bras_select_modal = json.dumps(
     {
         "type": "modal",
         "title": {
@@ -179,9 +187,12 @@ speedtests_bras_select_modal = json.dumps(
             }
         ]
     }
-)
+    )
+    return speedtests_bras_select_modal
 
-empty_modal = json.dumps(
+
+def render_empty_modal_sample():
+    empty_modal = json.dumps(
     {
         "type": "modal",
         "title": {
@@ -214,14 +225,20 @@ empty_modal = json.dumps(
             }
         ]
     }
-)
+    )
+    return empty_modal
 
-empty_blocks = {
+
+def render_empy_blocks_sample():
+    empty_blocks = {
     "blocks": [
     ]
 }
+    return empty_blocks
 
-modal_success = json.dumps(
+
+def render_modal_success():
+    modal_success = json.dumps(
     {
         "type": "modal",
         "title": {
@@ -244,7 +261,8 @@ modal_success = json.dumps(
             }
         ]
     }
-)
+    )
+    return modal_success
 
 
 def render_options_problems_to_ack(problems):

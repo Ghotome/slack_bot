@@ -26,7 +26,7 @@ def open_home_tab(event):
     try:
         client.views_publish(
             user_id=event['user'],
-            view=views.slack_home_tab
+            view=views.render_home_tab()
         )
 
         user = event['user']
@@ -38,7 +38,7 @@ def open_home_tab(event):
 @app.action('home_page')
 def return_to_home_page(ack):
     ack()
-    functions.update_home_tab(tab=views.slack_home_tab, user_id=user, client=client, log=log)
+    functions.update_home_tab(tab=views.render_home_tab(), user_id=user, client=client, log=log)
 
 
 @app.action('triggers')
@@ -63,7 +63,7 @@ def shortcut_ack_problem(ack, shortcut):
 
     modal_waiting = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=views.empty_modal
+        view=views.render_empty_modal_sample()
     )
     view_id = modal_waiting['view']['id']
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
@@ -113,7 +113,7 @@ def render_modal_speedtests(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=views.speedtests_bras_select_modal
+        view=views.render_speedtests_modal()
     )
     log.warning(result)
 
@@ -124,7 +124,7 @@ def render_modal_user_info(ack, shortcut):
     log.warning(shortcut)
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=views.input_user_login_modal
+        view=views.render_input_user_login_modal()
     )
     log.warning(result)
 
@@ -150,7 +150,7 @@ def action_submission(ack, body):
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         show_empty_modal = client.views_open(
             trigger_id=trigger_id,
-            view=views.empty_modal
+            view=views.render_empty_modal_sample()
         )
         subscriber_data = functions.get_user_info(user_input)
         message_body = (f"*Логин:* {user_input}\n"
@@ -189,7 +189,7 @@ def action_submission(ack, body):
         log.warning(f"CODE: {problem_update} // BODY: {problem_update.content}")
         modal_succes = client.views_open(
             trigger_id=trigger_id,
-            view=views.modal_success
+            view=views.render_modal_success()
         )
         log.warning(modal_succes)
 
@@ -248,7 +248,7 @@ def command_user_info(ack, body):
     log.info(body)
     result = client.views_open(
         trigger_id=body['trigger_id'],
-        view=views.input_user_login_modal
+        view=views.render_input_user_login_modal()
     )
     log.warning(result)
 
