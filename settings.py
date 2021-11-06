@@ -51,5 +51,18 @@ operators = {
     "U02J6GRLASH": {"name": "Елена Красно", "userside_id": "205"},
     "U02J9JRD2JX": {"name": "Максим Сырбу", "userside_id": "208"},
     "U02JTSMT2BF": {"name": "Сергей Яремченко", "userside_id": "211"},
-    "U02JMSFPMV3": {"name": "Евгения Цыха", "userside_id": "210"}
+    "U02JMSFPMV3": {"name": "Евгения Цыха", "userside_id": "210"},
+    "U02JA2E9YFP": {"name": "Алексей Кирносенко"},
+    "U02JRKSQ53K": {"name": "Александр Стародуб"},
+    "U02JRKSNEQZ": {"name": "Евгений Гаркуша"},
+    "U02JRKSRQ8H": {"name": "Шагов Егор"},
+    "U02JA2E2HB7": {"name": "Шалык Павел"},
+    "U02JA2E3CER": {"name": "Шевченко Денис"},
+    "U02JA2DSNQM": {"name": "Сергей Бондаренко"},
+    "U02JA2E8F45": {"name": "Шевченко Илья"},
+    "U02JH6M31R7": {"name": "Зайцев Александр"},
+    "U02J1AG6AJZ": {"name": "Александр Балюшко"},
+    "U02HV0KFB1A": {"name": "Дмитренко Дмитрий"},
+    "U02JU897ML0": {"name": "Смык Евгений"}
+
 }

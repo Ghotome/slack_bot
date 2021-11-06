@@ -46,12 +46,12 @@ def return_triggers_list(action, ack):
     ack()
     log.warning(action)
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
-    result = functions.get_list_of_triggers(auth)
+    result = functions.get_list_of_triggers(auth)[0]['blocks']
     log.warning(f'User: {user}')
 
     slack_message = client.chat_postMessage(
         channel=user,
-        attachments=[{"color": 'f2c744', 'blocks': result[0]['blocks']}]
+        attachments=[{"color": 'f2c744', 'blocks': result}]
     )
     log.warning(slack_message)
 
@@ -177,7 +177,7 @@ def action_submission(ack, body):
         user_name = 'Неизвестный пользователь'
         for user in settings.operators:
             if user == user_id:
-                user_name = user['name']
+                user_name = settings.operators[user]['name']
                 break
             else:
                 user_name = 'Неизвестный пользователь'
