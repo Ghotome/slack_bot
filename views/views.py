@@ -27,11 +27,27 @@ def render_home_tab():
             "type": "home",
             "blocks": [
                 {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "DiaNet BOT Main menu\nВоспользуйтесь одним из блоков ниже",
+                    }
+                },
+                {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": ("*Cамые часто используемыые функции*\n"
-                                 "*Для получения более подробной информации о функционале бота, нажмите на _FAQ_*")
+                        "text": "*Вы можете воспользоваться кнопками навигации или использовать _FAQ_ для получения подробной информации*"
+                    }
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*_Cамые часто используемыые функции_*\n"
                     }
                 },
                 {
@@ -41,8 +57,7 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Триггеры",
-                                "emoji": True
+                                "text": "Триггеры"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -52,19 +67,7 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Аплинки",
-                                "emoji": True
-                            },
-                            "style": "primary",
-                            "value": "click_me_123",
-                            "action_id": "uplinks"
-                        },
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "text": "Уровень топлива",
-                                "emoji": True
+                                "text": "Уровень топлива"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -74,8 +77,7 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Температура",
-                                "emoji": True
+                                "text": "Температура"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -85,8 +87,7 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Пропущенные",
-                                "emoji": True
+                                "text": "Пропущенные"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -96,8 +97,117 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Статистика по звонкам",
-                                "emoji": True
+                                "text": "FAQ"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "faq"
+                        }
+                    ]
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*_Для линейного_*"
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Триггеры"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "triggers"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Уровень топлива"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "fuel"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Температура"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "temp"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "FAQ"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "faq"
+                        }
+                    ]
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": "*_Для саппортов_*"
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Триггеры"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "triggers"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Аплинки"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "uplinks"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Пропущенные"
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "missed_calls"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Статистика по звонкам"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -107,8 +217,7 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "Статистика по коллбекам",
-                                "emoji": True
+                                "text": "Статистика по коллбекам"
                             },
                             "style": "primary",
                             "value": "click_me_123",
@@ -118,14 +227,16 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
-                                "text": "FAQ",
-                                "emoji": True
+                                "text": "FAQ"
                             },
                             "style": "primary",
                             "value": "click_me_123",
                             "action_id": "faq"
                         }
                     ]
+                },
+                {
+                    "type": "divider"
                 }
             ]
         }
