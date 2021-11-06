@@ -51,7 +51,7 @@ def return_triggers_list(action, ack):
 
     slack_message = client.chat_postMessage(
         channel=user,
-        attachments=[{"color": 'f2c744', 'blocks': result['blocks']}]
+        attachments=[{"color": 'f2c744', 'blocks': result[0]['blocks']}]
     )
     log.warning(slack_message)
 
