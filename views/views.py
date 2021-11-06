@@ -345,7 +345,16 @@ def render_speedtests_modal():
                     "label": {
                         "type": "plain_text",
                         "text": "Выберите BRAS"
-                    }
+                    },
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "plain_text",
+                            "text": "Developed by Egor Nefedov"
+                        }
+                    ]
                 }
             ]
         }
@@ -359,15 +368,16 @@ def render_empty_modal_sample():
             "type": "modal",
             "title": {
                 "type": "plain_text",
-                "text": "DiaNet",
-                "emoji": True
+                "text": "DiaNet"
             },
             "close": {
                 "type": "plain_text",
-                "text": "Закрыть",
-                "emoji": True
+                "text": "Закрыть"
             },
             "blocks": [
+                {
+                    "type": "divider"
+                },
                 {
                     "type": "section",
                     "text": {
@@ -380,10 +390,12 @@ def render_empty_modal_sample():
                     "elements": [
                         {
                             "type": "plain_text",
-                            "text": "Должно быть быстро",
-                            "emoji": True
+                            "text": "Должно быть быстро"
                         }
                     ]
+                },
+                {
+                    "type": "divider"
                 }
             ]
         }
@@ -513,6 +525,15 @@ def render_ack_problem_modal(options):
                         "text": "Введите сообщение",
                         "emoji": True
                     }
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "plain_text",
+                            "text": "Developed by Egor Nefedov"
+                        }
+                    ]
                 }
             ]
         }
@@ -563,6 +584,15 @@ def render_user_info_modal(body, subscriber):
                         "type": "mrkdwn",
                         "text": f"{body}"
                     }
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "plain_text",
+                            "text": "Developed by Egor Nefedov and Ivan Golubev"
+                        }
+                    ]
                 }
             ]
         }
