@@ -27,3 +27,29 @@ images_links = {
     'missed_calls': 'https://graf.dianet.online/render/d-solo/cHENmG8Mk/asterisk?orgId=1&from=now&to=now&panelId=2&width=800&height=1000&tz=Europe%2FZaporozhye',
     'temp': 'https://graf.dianet.online/render/d-solo/0kaml5jWz/temp?orgId=1&refresh=10s&from=now&to=now-24h&panelId=2&width=1000&height=500&tz=Europe%2FZaporozhye'
 }
+
+operators = {
+    "U02J2SEMQ86": {"name": "Оксов Станислав", "userside_id": "190"},
+    "U02J9JR3XQB": {"name": "Хилобок Ксения", "userside_id": "94"},
+    "U02J2SEKBFY": {"name": "Стародуб Кристина", "userside_id": "126"},
+    "U02JN6VRE0H": {"name": "Коломиец Павел", "userside_id": "191"},
+    "U02J9JR03AP": {"name": "Чиглашвили Кирилл", "userside_id": "193"},
+    "U02J9JRG87M": {"name": "Хорошайлова Оксана", "userside_id": "143"},
+    "U02J9JR9CAF": {"name": "Полякова Мария", "userside_id": "156"},
+    "U02J9HQSBJ7": {"name": "Лупынина Анастасия", "userside_id": "158"},
+    "U02J2SEPZ2A": {"name": "Петручук Любовь", "userside_id": "163"},
+    "U02J9JR7RFV": {"name": "Нефёдов Егор", "userside_id": "168"},
+    "U02J2SERRC6": {"name": "Зрожевский Анатолий", "userside_id": "170"},
+    "U02J9JR1V0T": {"name": "Жирова Полина", "userside_id": "189"},
+    "U02J9JR5VFV": {"name": "Лысенко Мария", "userside_id": "197"},
+    "U02JLTM0GN5": {"name": "Стажер", "userside_id": "40"},
+    "U02J6JY6GP7": {"name": "Хренкина Наталия", "userside_id": "192"},
+    "U02J9JRES9H": {"name": "Арсланов Артем", "userside_id": "204"},
+    "U02J9JRJ79R": {"name": "Константин Гуреев", "userside_id": "201"},
+    "U02J9JRB2SF": {"name": "Березовский Вадим", "userside_id": "206"},
+    "U02J6GS8HQV": {"name": "Кристина Костенко", "userside_id": "199"},
+    "U02J6GRLASH": {"name": "Елена Красно", "userside_id": "205"},
+    "U02J9JRD2JX": {"name": "Максим Сырбу", "userside_id": "208"},
+    "U02JTSMT2BF": {"name": "Сергей Яремченко", "userside_id": "211"},
+    "U02JMSFPMV3": {"name": "Евгения Цыха", "userside_id": "210"}
+}

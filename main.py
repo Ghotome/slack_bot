@@ -174,9 +174,17 @@ def action_submission(ack, body):
         problem_values_key = list(body['view']['state']['values'])[0]
         message_key = list(body['view']['state']['values'])[1]
         trigger_id = body['trigger_id']
+        user_name = 'Неизвестный пользователь'
+        for user in settings.operators:
+            if user == user_id:
+                user_name = user['name']
+                break
+            else:
+                user_name = 'Неизвестный пользователь'
+
         zbbx_trigger_id = body['view']['state']['values'][problem_values_key]['problems_to_ack']['selected_option'][
             'value']
-        zbbx_ack_message = body['view']['state']['values'][message_key]['problems_to_ack_message']['value']
+        zbbx_ack_message = f"{user_name}: {body['view']['state']['values'][message_key]['problems_to_ack_message']['value']}"
         problem_update = functions.zabbix_event_acknowledge(auth, message=zbbx_ack_message, event_id=zbbx_trigger_id)
         log.warning(f"CODE: {problem_update} // BODY: {problem_update.content}")
         modal_succes = client.views_open(
