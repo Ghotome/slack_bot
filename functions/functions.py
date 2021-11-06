@@ -111,7 +111,7 @@ def zabbix_event_acknowledge(auth, message, event_id):
         "auth": auth,
         "id": 1
     }
-    event_acknowledge = requests.post(settings.ZABBIX_API_URL, data=body)
+    event_acknowledge = requests.post(settings.ZABBIX_API_URL, json=body)
     return event_acknowledge
 
 
