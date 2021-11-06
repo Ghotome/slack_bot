@@ -77,6 +77,7 @@ def shortcut_ack_problem(ack, shortcut):
     log.warning(result)
 
 
+
 @app.action('login_handler')
 def send_subscriber_info(ack, action):
     log.warning(action)
