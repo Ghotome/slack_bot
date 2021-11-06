@@ -234,6 +234,26 @@ def action_missed_calls(ack, action):
     log.warning(result)
 
 
+@app.action('call_statistics')
+def action_missed_calls(ack, action):
+    ack()
+    log.warning(action)
+    image = requests.get(settings.images_links['calls_statistics'],
+                         headers=settings.api_tokens['grafana']['auth']).content
+    message = functions.send_photo(user, image, client=client, log=log)
+    log.warning(message)
+
+
+@app.action('callback_statistics')
+def action_missed_calls(ack, action):
+    ack()
+    log.warning(action)
+    image = requests.get(settings.images_links['callback_statistics'],
+                         headers=settings.api_tokens['grafana']['auth']).content
+    message = functions.send_photo(user, image, client=client, log=log)
+    log.warning(message)
+
+
 @app.command("/user_info")
 def command_user_info(ack, body):
     ack()

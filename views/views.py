@@ -96,6 +96,28 @@ def render_home_tab():
                             "type": "button",
                             "text": {
                                 "type": "plain_text",
+                                "text": "Статистика по звонкам",
+                                "emoji": True
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "call_statistics"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Статистика по коллбекам",
+                                "emoji": True
+                            },
+                            "style": "primary",
+                            "value": "click_me_123",
+                            "action_id": "callback_statistics"
+                        },
+                        {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
                                 "text": "FAQ",
                                 "emoji": True
                             },
