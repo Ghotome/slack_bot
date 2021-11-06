@@ -244,11 +244,5 @@ def command_user_info(ack, body):
     log.warning(result)
 
 
-@app.block_action("")
-def some(ack, body):
-    ack()
-    log.warning(body)
-
-
 if __name__ == "__main__":
     app.start()
