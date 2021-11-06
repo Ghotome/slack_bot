@@ -251,18 +251,20 @@ def render_empty_modal_sample():
 
 def render_author():
     author = json.dumps(
-        {
-            "type": "context",
-            "elements": [
-                {
-                    "type": "plain_text",
-                    "text": "Created by Egor Nefedov",
-                    "emoji": True
-                }
-            ]
-        }
+        [
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "Created by Egor Nefedov",
+                        "emoji": True
+                    }
+                ]
+            }
+        ]
     )
-    return [author]
+    return author
 
 
 def render_empy_blocks_sample():
