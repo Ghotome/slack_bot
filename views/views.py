@@ -30,7 +30,7 @@ def render_home_tab():
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "DiaNet BOT Main menu\nВоспользуйтесь одним из блоков ниже",
+                        "text": "DiaNet BOT Main menu\nВоспользуйтесь одним из блоков ниже"
                     }
                 },
                 {
@@ -237,6 +237,15 @@ def render_home_tab():
                 },
                 {
                     "type": "divider"
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "type": "plain_text",
+                            "text": "Developed by Egor Nefedov"
+                        }
+                    ]
                 }
             ]
         }
@@ -390,7 +399,7 @@ def render_author():
                 "elements": [
                     {
                         "type": "plain_text",
-                        "text": "Created by Egor Nefedov",
+                        "text": "Developed by Egor Nefedov",
                         "emoji": True
                     }
                 ]
