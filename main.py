@@ -187,11 +187,16 @@ def action_submission(ack, body):
         zbbx_ack_message = f"{user_name}: {body['view']['state']['values'][message_key]['problems_to_ack_message']['value']}"
         problem_update = functions.zabbix_event_acknowledge(auth, message=zbbx_ack_message, event_id=zbbx_trigger_id)
         log.warning(f"CODE: {problem_update} // BODY: {problem_update.content}")
-        modal_succes = client.views_open(
+        modal_waiting = client.views_open(
             trigger_id=trigger_id,
+            view=views.render_empty_modal_sample()
+        )
+        view_id = modal_waiting['view']['id']
+        modal_success = client.views_update(
+            view_id=view_id,
             view=views.render_modal_success()
         )
-        log.warning(modal_succes)
+        log.warning(modal_success)
 
 
 @app.action('fuel')
