@@ -18,7 +18,7 @@ def __init__():
                 service_file.close()
 
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
-            os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
+            os.chmod(f'{path}projects/slack_bot/main.py', 755)
             print(subprocess.Popen((f'cat {path}projects/slack_bot/init_files/slack_bot.service; '
                                     'python3 -m venv slack_bot && '
                                     '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
