@@ -9,7 +9,7 @@ def __init__():
                      '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
                      'pip install --upgrade pip && '
                      'pip install -r requirements.txt;'
-                     'cp ./slack_bot.service /etc/systemd/system/ && '
+                     'cp /home/fishhead/projects/slack_bot/init_files/slack_bot.service /etc/systemd/system/ && '
                      'systemctl enable slack_bot.service && '
                      'systemctl start slack_bot.service; '
                      'systemctl status slack_bot.service'), shell=True,
