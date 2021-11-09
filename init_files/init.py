@@ -34,9 +34,9 @@ def __init__():
                 for line in read_object:
                     write_object.write(line)
 
-            os.rename(edited_file, main_file)
-            os.remove(main_file)
-            os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
+                os.rename(edited_file, main_file)
+                os.remove(main_file)
+                os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
         else:
             print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
 
