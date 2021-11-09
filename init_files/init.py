@@ -12,12 +12,12 @@ def __init__():
         else:
             with open(f"{path}/projects/slack_bot/init_files/slack_bot.service", 'r+') as service_file:
                 lines = service_file.read()
-                print(lines)
+                print(f"Before the replace: \n{lines}")
                 service_file.writelines(lines.replace('{HOME_PATH}', f'{path}'))
 
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
             os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
-            print(subprocess.Popen(('cat ./slack_bot.service; '
+            print(subprocess.Popen((f'cat {path}project/init_files/slack_bot.service; '
                                     'python3 -m venv slack_bot && '
                                     '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
                                     'pip install --upgrade pip && '
