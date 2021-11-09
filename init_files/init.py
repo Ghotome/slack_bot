@@ -11,6 +11,7 @@ def __init__():
             with open(f"{path}/projects/slack_bot/init_files/slack_bot.service", 'r+') as service_file:
                 lines = service_file.read()
                 print(f"Before the replace: \n{lines}")
+                service_file.truncate()
                 service_file.writelines(lines.replace('{HOME_PATH}', f'{path}'))
 
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
