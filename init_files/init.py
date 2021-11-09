@@ -6,11 +6,8 @@ import traceback
 
 def __init__():
     path = sys.argv[1]
-    print(path)
     try:
         if path.startswith('/') and path.endswith('/'):
-            print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
-        else:
             with open(f"{path}/projects/slack_bot/init_files/slack_bot.service", 'r+') as service_file:
                 lines = service_file.read()
                 print(f"Before the replace: \n{lines}")
@@ -37,6 +34,9 @@ def __init__():
 
             os.remove(main_file)
             os.rename(edited_file, main_file)
+        else:
+            print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
+
     except IndexError:
         print(f'You need to print -- ./init_files/init.py /home/path/')
     except Exception as error:
