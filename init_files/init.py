@@ -10,7 +10,6 @@ def __init__():
         if path.startswith('/') and path.endswith('/'):
             with open(f"{path}projects/slack_bot/init_files/slack_bot.service", 'r') as service_file:
                 lines = service_file.read()
-                print(f"Before the replace: \n{lines}")
                 service_file.close()
             with open(f"{path}projects/slack_bot/init_files/slack_bot.service", "w") as service_file:
                 service_file.truncate()
