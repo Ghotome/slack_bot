@@ -338,7 +338,7 @@ def command_user_info(ack, body):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON COMMAND - - USER_INFO: \n{body}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON COMMAND - - USER_INFO: \n{body}")
     result = client.views_open(
         trigger_id=body['trigger_id'],
         view=views.render_input_user_login_modal()
