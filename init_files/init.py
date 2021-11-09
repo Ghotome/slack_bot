@@ -8,23 +8,23 @@ def __init__():
     path = sys.argv[1]
     try:
         if path.startswith('/') and path.endswith('/'):
-            with open(f"{path}/projects/slack_bot/init_files/slack_bot.service", 'r') as service_file:
+            with open(f"{path}projects/slack_bot/init_files/slack_bot.service", 'r') as service_file:
                 lines = service_file.read()
                 print(f"Before the replace: \n{lines}")
                 service_file.close()
-            with open(f"{path}/projects/slack_bot/init_files/slack_bot.service", "w") as service_file:
+            with open(f"{path}projects/slack_bot/init_files/slack_bot.service", "w") as service_file:
                 service_file.truncate()
                 service_file.writelines(lines.replace('{HOME_PATH}', f'{path}'))
                 service_file.close()
 
-            python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
-            os.chmod(f'{path}projects/slack_bot/main.py', 755)
+            python = f"#!{path}projects/slack_bot/slack_bot/bin/python3"
+            os.chmod('./main.py', 0o755)
             print(subprocess.Popen((f'cat {path}projects/slack_bot/init_files/slack_bot.service; '
                                     'python3 -m venv slack_bot && '
-                                    '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
+                                    f'. {path}projects/slack_bot/slack_bot/bin/activate && '
                                     'pip install --upgrade pip && '
                                     'pip install -r requirements.txt;'
-                                    'cp /home/fishhead/projects/slack_bot/init_files/slack_bot.service /etc/systemd/system/ && '
+                                    f'cp {path}projects/slack_bot/init_files/slack_bot.service /etc/systemd/system/ && '
                                     'systemctl enable slack_bot.service && '
                                     'systemctl start slack_bot.service; '
                                     'systemctl status slack_bot.service'), shell=True,
