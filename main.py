@@ -23,20 +23,22 @@ app = App(
     signing_secret=settings.SLACK_SIGNING_SECRET
 )
 
+global user
+
 
 @app.event("app_home_opened")
 def open_home_tab(event):
+    global user
+    user = event['user']
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON ACK - - HOME TAB OPENED: \n{event}")
-    global user
     try:
         client.views_publish(
             user_id=event['user'],
             view=views.render_home_tab()
         )
-
-        user = event['user']
 
     except Exception as e:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
@@ -48,7 +50,8 @@ def return_triggers_list(action, ack):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                    f"JSON ACK - - TRIGGERS: \n{action}")
+                    f"USER: {user}, {settings.operators[user]['name']} -- "
+                       f"JSON ACK - - TRIGGERS: \n{action}")
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)[0]['blocks']
     slack_message = client.chat_postMessage(
@@ -57,6 +60,7 @@ def return_triggers_list(action, ack):
     )
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON MESSAGE - - TRIGGERS: \n{slack_message}")
 
 
@@ -65,7 +69,8 @@ def shortcut_ack_problem(ack, shortcut):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                    f"JSON ACK - - ACK PROBLEM: \n{shortcut}")
+                    f"USER: {user}, {settings.operators[user]['name']} -- "
+                       f"JSON ACK - - ACK PROBLEM: \n{shortcut}")
 
     modal_waiting = client.views_open(
         trigger_id=shortcut['trigger_id'],
@@ -82,6 +87,7 @@ def shortcut_ack_problem(ack, shortcut):
     )
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON MODAL VIEW - - ACK PROBLEM: \n{result}")
 
 
@@ -91,6 +97,7 @@ def send_subscriber_info(ack, action):
     if action['value'].isdecimal():
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"LOGIN DEFINED BY USER INPUT: {action['value']}")
         subscriber_data = functions.get_user_info(str(action['value']))
         log.warning(subscriber_data)
@@ -107,6 +114,7 @@ def send_subscriber_info(ack, action):
                                         log=log)
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON MESSAGE - - LOGIN HANDLER: \n{result}")
         ack()
 
@@ -116,11 +124,13 @@ def action_uplinks(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON ACK - - UPLINKS: \n{action}")
     image = requests.get(settings.images_links['uplinks'], headers=settings.api_tokens['grafana']['auth']).content
     send_photo = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON SEND PHOTO - - UPLINKS: \n{send_photo}")
 
 
@@ -129,6 +139,7 @@ def render_modal_speedtests(ack, shortcut):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON ACK SHORTCUT - - MODAL SPEEDTESTS CHOSE: \n{shortcut}")
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
@@ -136,6 +147,7 @@ def render_modal_speedtests(ack, shortcut):
     )
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON MODAL RENDER - - SPEEDTESTS CHOSE: \n{result}")
 
 
@@ -144,6 +156,7 @@ def render_modal_user_info(ack, shortcut):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON SHORTCUT - - RENDER MODAL LOGIN INPUT: \n{shortcut}")
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
@@ -151,14 +164,16 @@ def render_modal_user_info(ack, shortcut):
     )
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON MODAL RENDER - - USER LOGIN INPUT: \n{result}")
 
 
 @app.view_submission("")
-def action_submission(ack, body):
+def action_submission(ack, body, user=user):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON ACK SUBMISSION - - \n{body}")
     user_id = body['user']['id']
     trigger_id = body['trigger_id']
@@ -173,6 +188,7 @@ def action_submission(ack, body):
         result = functions.send_photo(user_id, image, client=client, log=log)
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON SEND PHOTO - - SPEEDTEST BRAS: \n{result}")
     elif "login_input" in body['view']['state']['values'][user_response_key]:
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
@@ -198,6 +214,7 @@ def action_submission(ack, body):
         )
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON MODAL RENDER - - USER INFO BY LOGIN: \n{result}")
     elif len(list(body['view']['state']['values'])) == 2:
         auth = functions.zabbix_login(settings.ZABBIX_API_URL)
@@ -235,13 +252,13 @@ def action_fuel(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - - FUEL LEVEL: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - - FUEL LEVEL: \n{action}")
     image = requests.get(settings.images_links['fuel'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SEND PHOTO - - FUEL LEVEL: \n{message}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND PHOTO - - FUEL LEVEL: \n{message}")
 
 
 @app.action('temp')
@@ -249,13 +266,13 @@ def action_fuel(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - - TEMPERATURE: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - - TEMPERATURE: \n{action}")
     image = requests.get(settings.images_links['temp'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SEND PHOTO - - TEMPERATURE: \n{message}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND PHOTO - - TEMPERATURE: \n{message}")
 
 
 @app.action('missed_calls')
@@ -263,13 +280,13 @@ def action_missed_calls(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - MISSED CALLS: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - MISSED CALLS: \n{action}")
     image = requests.get(settings.images_links['missed_calls'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SEND PHOTO - - MISSED CALLS: \n{message}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND PHOTO - - MISSED CALLS: \n{message}")
 
 
 @app.action('faq')
@@ -277,7 +294,7 @@ def action_missed_calls(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - - FAQ: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - - FAQ: \n{action}")
     message_body = views.render_faq_message()
     author = views.render_author()
     result = functions.send_message(channel=user, body=message_body,
@@ -285,7 +302,7 @@ def action_missed_calls(ack, action):
                                     client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SENDD MESSAGE - - FAQ: \n{result}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SENDD MESSAGE - - FAQ: \n{result}")
 
 
 @app.action('call_statistics')
@@ -293,13 +310,13 @@ def action_missed_calls(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - - CALL STATISTICS: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - - CALL STATISTICS: \n{action}")
     image = requests.get(settings.images_links['calls_statistics'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SEND PHOTO - - CALL STATISTICS: \n{message}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND PHOTO - - CALL STATISTICS: \n{message}")
 
 
 @app.action('callback_statistics')
@@ -307,13 +324,13 @@ def action_missed_calls(ack, action):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON ACK - - CALLBACK STATISTICS: \n{action}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON ACK - - CALLBACK STATISTICS: \n{action}")
     image = requests.get(settings.images_links['callback_statistics'],
                          headers=settings.api_tokens['grafana']['auth']).content
     message = functions.send_photo(user, image, client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSON SEND PHOTO - - CALLBACK STATISTICS: \n{message}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND PHOTO - - CALLBACK STATISTICS: \n{message}")
 
 
 @app.command("/user_info")
@@ -328,7 +345,7 @@ def command_user_info(ack, body):
     )
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"JSOM MODAL RENDER - - USER INFO: \n{result}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSOM MODAL RENDER - - USER INFO: \n{result}")
 
 
 if __name__ == "__main__":
