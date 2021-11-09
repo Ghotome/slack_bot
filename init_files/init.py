@@ -6,6 +6,7 @@ import traceback
 
 def __init__():
     path = sys.argv[0]
+    print(path)
     try:
         if path.startswith('/') and path.endswith('/'):
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
