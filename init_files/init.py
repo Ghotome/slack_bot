@@ -5,7 +5,7 @@ import traceback
 
 
 def __init__():
-    path = sys.argv[0]
+    path = sys.argv[1]
     print(path)
     try:
         if path.startswith('/') and path.endswith('/'):
