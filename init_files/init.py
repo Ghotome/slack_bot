@@ -27,8 +27,8 @@ def __init__():
                                     'systemctl start slack_bot.service; '
                                     'systemctl status slack_bot.service'), shell=True,
                                    stdout=subprocess.PIPE, env=os.environ).stdout.read().decode('utf-8'))
-            edited_file = "main.py.bak"
-            main_file = "./main.py"
+            edited_file = f"{path}projects/slack_bot/main.py.bak"
+            main_file = f"{path}projects/slack_bot/"
             with open(main_file, 'r') as read_object, open(edited_file, 'w') as write_object:
                 write_object.write(f"{python}\n")
                 for line in read_object:
@@ -36,7 +36,7 @@ def __init__():
 
             os.rename(edited_file, main_file)
             os.remove(main_file)
-            os.chmod('./main.py', 0o755)
+            os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
         else:
             print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
 
