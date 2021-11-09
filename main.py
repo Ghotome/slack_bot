@@ -51,7 +51,7 @@ def return_triggers_list(action, ack):
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                     f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON ACK - - TRIGGERS: \n{action}")
+                    f"JSON ACK - - TRIGGERS: \n{action}")
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
     result = functions.get_list_of_triggers(auth)[0]['blocks']
     slack_message = client.chat_postMessage(
