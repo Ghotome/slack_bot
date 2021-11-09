@@ -23,8 +23,6 @@ app = App(
     signing_secret=settings.SLACK_SIGNING_SECRET
 )
 
-global user
-
 
 @app.event("app_home_opened")
 def open_home_tab(event):
@@ -169,11 +167,10 @@ def render_modal_user_info(ack, shortcut):
 
 
 @app.view_submission("")
-def action_submission(ack, body, user=user):
+def action_submission(ack, body):
     ack()
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"USER: {user}, {settings.operators[user]['name']} -- "
                        f"JSON ACK SUBMISSION - - \n{body}")
     user_id = body['user']['id']
     trigger_id = body['trigger_id']
@@ -188,7 +185,6 @@ def action_submission(ack, body, user=user):
         result = functions.send_photo(user_id, image, client=client, log=log)
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON SEND PHOTO - - SPEEDTEST BRAS: \n{result}")
     elif "login_input" in body['view']['state']['values'][user_response_key]:
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
@@ -214,7 +210,6 @@ def action_submission(ack, body, user=user):
         )
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                           f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON MODAL RENDER - - USER INFO BY LOGIN: \n{result}")
     elif len(list(body['view']['state']['values'])) == 2:
         auth = functions.zabbix_login(settings.ZABBIX_API_URL)

@@ -6,7 +6,7 @@ ZABBIX_API_URL = "https://zbbx.dianet.online/api_jsonrpc.php"
 USERNAME = "apiuser"
 PASSWORD = "FKbiAVg86G5FqViahwSkAbMk87ArJ6oMc"
 DEBUG = True
-log_file = '/var/log/slack_bot/slack_bot_logging.txt'
+log_file = '/home/fishhead/Desktop/slack_bot_logging.txt'
 
 api_tokens = {
     "abills_settings": {
