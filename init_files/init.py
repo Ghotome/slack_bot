@@ -8,7 +8,7 @@ def __init__():
     path = sys.argv[1]
     try:
         if path.startswith('/') and path.endswith('/'):
-            with open("./slack_bot.service", 'a') as service_file:
+            with open("./init_files/slack_bot.service", 'a') as service_file:
                 lines = service_file.readlines()
                 for line in lines:
                     if '{HOME_PATH}' in line:
