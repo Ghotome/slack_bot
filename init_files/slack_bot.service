@@ -5,7 +5,7 @@ Conflicts=getty@tty1.service
 
 [Service]
 Type=simple
-ExecStart=/home/fishhead/projects/slack_bot/slack_bot/bin/python3 /home/fishhead/projects/slackk_bot/init_files/main.py
+ExecStart=/home/fishhead/projects/slack_bot/slack_bot/bin/python3 /home/fishhead/projects/slack_bot/init_files/main.py
 StandardInput=tty-force
 
 [Install]
