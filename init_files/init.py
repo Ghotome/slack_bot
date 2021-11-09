@@ -6,12 +6,18 @@ import traceback
 
 def __init__():
     path = sys.argv[1]
-    print(path)
     try:
         if path.startswith('/') and path.endswith('/'):
+            with open("./slack_bot.service", 'a') as service_file:
+                lines = service_file.readlines()
+                for line in lines:
+                    if '{HOME_PATH}' in line:
+                        line.replace('{HOME_PATH}', path)
+
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
             os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
-            print(subprocess.Popen(('python3 -m venv slack_bot && '
+            print(subprocess.Popen(('cat ./slack_bot.service; '
+                                    'python3 -m venv slack_bot && '
                                     '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
                                     'pip install --upgrade pip && '
                                     'pip install -r requirements.txt;'
