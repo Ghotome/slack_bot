@@ -6,7 +6,7 @@ def __init__():
     python = "#!/home/fishhead/projects/slack_bot/slack_bot/bin/python3"
     os.chmod('./main.py', 0o755)
     print(subprocess.Popen(('python3 -m venv slack_bot && '
-                     '. /home/fishhead/projects/slackk_bot/slack_bot/bin/activate && '
+                     '. /home/fishhead/projects/slack_bot/slack_bot/bin/activate && '
                      'pip install --upgrade pip && '
                      'pip install -r requirements.txt;'
                      'cp ./slack_bot.service /etc/systemd/system/ && '
