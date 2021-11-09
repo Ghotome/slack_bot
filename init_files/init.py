@@ -15,8 +15,6 @@ def __init__():
                 print(lines)
                 service_file.writelines(lines.replace('{HOME_PATH}', f'{path}'))
 
-
-
             python = f"#!{path}/projects/slack_bot/slack_bot/bin/python3"
             os.chmod(f'{path}projects/slack_bot/main.py', 0o755)
             print(subprocess.Popen(('cat ./slack_bot.service; '
