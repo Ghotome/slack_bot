@@ -17,7 +17,6 @@ def __init__():
                 service_file.close()
 
             python = f"#!{path}projects/slack_bot/slack_bot/bin/python3"
-            os.chmod('./main.py', 0o755)
             print(subprocess.Popen((f'cat {path}projects/slack_bot/init_files/slack_bot.service; '
                                     'python3 -m venv slack_bot && '
                                     f'. {path}projects/slack_bot/slack_bot/bin/activate && '
@@ -35,8 +34,9 @@ def __init__():
                 for line in read_object:
                     write_object.write(line)
 
-            os.remove(main_file)
             os.rename(edited_file, main_file)
+            os.remove(main_file)
+            os.chmod('./main.py', 0o755)
         else:
             print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
 
