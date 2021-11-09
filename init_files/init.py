@@ -6,6 +6,7 @@ import traceback
 
 def __init__():
     path = sys.argv[1]
+    print(path)
     try:
         if path.startswith('/') and path.endswith('/'):
             print(f'You need to print /home/path/ with "/" at end and beginning, I need full home path')
