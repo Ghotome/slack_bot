@@ -1,0 +1,12 @@
+[Unit]
+Description=Telegram Bot by fishhead
+After=multi-user.target
+Conflicts=getty@tty1.service
+
+[Service]
+Type=simple
+ExecStart=/home/fishhead/projects/slackk_bot/slack_bot/bin/python3 /home/fishhead/projects/slackk_bot/init_files/init.py
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target
