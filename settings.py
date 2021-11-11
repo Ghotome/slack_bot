@@ -4,7 +4,7 @@ SLACK_SIGNING_SECRET = "76353595b80820112599ebfb461d9c95"
 ZABBIX_URL = "https://zbbx.dianet.online/"
 ZABBIX_API_URL = "https://zbbx.dianet.online/api_jsonrpc.php"
 USERNAME = "apiuser"
-PASSWORD = "FKbiAVg86G5FqViahwSkAbMk87ArJ6oMc"
+PASSWORD = "bA5r5zT9g9cwbcT4UxXpYw2G"
 DEBUG = True
 log_file = '/var/log/slack_bot/slack_bot_logging.txt'
 
