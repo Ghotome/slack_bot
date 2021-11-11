@@ -46,8 +46,7 @@ def open_home_tab(event):
 @app.action('triggers')
 def return_triggers_list(action, ack):
     ack()
-    if settings.DEBUG:
-        log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+    log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                     f"USER: {user}, {settings.operators[user]['name']} -- "
                     f"JSON ACK - - TRIGGERS: \n{action}")
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
