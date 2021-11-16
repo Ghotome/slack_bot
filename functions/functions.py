@@ -32,27 +32,33 @@ def get_user_info(login: str):
         f'https://abill.dianet.online:9443/admin/index.cgi?qindex=7&search=1&type=10&header=1&json=1&LOGIN={login}'
         f'&EXPORT_CONTENT=USERS_LIST&SKIP_FULL_INFO=1&API_KEY=sdfgljkshdfghjdf2345js')
     try:
-        response = json.loads(requests.get(url_user_info).content.decode('utf-8'))['DATA_1'][-1]
-        address_name = str(response['address_full']).split(',')[0]
-        address_number = str(response['address_full']).split(',')[1]
+        user_info = {}
+        user_uid = ''
+        response = json.loads(requests.get(url_user_info).content.decode('utf-8'))['DATA_1']
+        for user in response:
+            if user['login'] == login:
+                address_name = str(user['address_full']).split(',')[0]
+                address_number = str(user['address_full']).split(',')[1]
+                user_uid = user['uid']
 
-        user_info = {
-            'fio': f"{response['fio']}",
-            'subscriber_status': f'{response["login_status"]}',
-            'address': f'{address_name[:1]}{address_name[1:].replace(address_name[1:], "*" * len(address_name[1:]))}, '
-                       f'{address_number}',
-            'tariff': '',
-            'status': '',
-            'cid': '',
-            'onu_status': '',
-            'onu_attenuation': '',
-            'onu_position': ''
-        }
+                user_info = {
+                    'fio': f"{user['fio']}",
+                    'subscriber_status': f'{user["login_status"]}',
+                    'address': f'{address_name[:1]}{address_name[1:].replace(address_name[1:], "*" * len(address_name[1:]))}, '
+                               f'{address_number}',
+                    'tariff': '',
+                    'status': '',
+                    'cid': '',
+                    'onu_status': '',
+                    'onu_attenuation': '',
+                    'onu_position': ''
+                }
+                break
     except KeyError:
         return 'Пользователь не найден'
     except IndexError:
         return 'Пользователь не найден'
-    cid_url = (f"https://abill.dianet.online:9443/admin/index.cgi?UID={response['uid']}"
+    cid_url = (f"https://abill.dianet.online:9443/admin/index.cgi?UID={user_uid}"
                f"&json=1&get_index=internet_user&header=1&API_KEY=sdfgljkshdfghjdf2345js")
     try:
         cid = json.loads(requests.get(cid_url).content.decode('utf-8'))
@@ -201,7 +207,7 @@ def get_list_of_triggers(auth):
                             message_line = f":white_check_mark:*Проблема: {trigger['description']}*"
                             time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
                             result = views.render_one_trigger_line(message_line, ack_link,
-                                                                         f"{ack_message}\r{time}\n\n")
+                                                                   f"{ack_message}\r{time}\n\n")
                             block_message['blocks'].append(result)
                             problems[message_line.replace(':white_check_mark:*Проблема: ', ':white_check_mark:')
                                 .replace('*', '')] = ack_link.split('=')[-1]
@@ -318,3 +324,6 @@ def send_message(body: str, channel: str, blocks, color: str, client, log):
         return result
     except SlackApiError as error:
         log.error(f'API raised an error: {traceback.format_exc(error)}')
+
+
+print(get_user_info("12547"))
