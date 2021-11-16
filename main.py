@@ -187,6 +187,7 @@ def action_submission(ack, body):
                            f"JSON SEND PHOTO - - SPEEDTEST BRAS: \n{result}")
     elif "login_input" in body['view']['state']['values'][user_response_key]:
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
+        log.warning(user_input)
         show_empty_modal = client.views_open(
             trigger_id=trigger_id,
             view=views.render_empty_modal_sample()
