@@ -324,6 +324,3 @@ def send_message(body: str, channel: str, blocks, color: str, client, log):
         return result
     except SlackApiError as error:
         log.error(f'API raised an error: {traceback.format_exc(error)}')
-
-
-print(get_user_info("12547"))

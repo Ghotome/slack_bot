@@ -192,6 +192,7 @@ def action_submission(ack, body):
             view=views.render_empty_modal_sample()
         )
         subscriber_data = functions.get_user_info(user_input)
+        log.warning(f'Get info by login {user_input}: \n{subscriber_data}')
         message_body = (f"*Логин:* {user_input}\n"
                         f"*ФИО:* {subscriber_data['fio']}\n"
                         f"*Статус учётки:* {subscriber_data['subscriber_status']}\n"
