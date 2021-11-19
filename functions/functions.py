@@ -141,7 +141,7 @@ def get_list_of_triggers(auth):
                                                  "expandDescription": "True",
                                                  "active": "True",
                                                  "monitored": "True",
-                                                 "min_severity": 3,
+                                                 "min_severity": 2,
                                                  "filter": {
                                                      "value": "1",
                                                      "status": "0"
