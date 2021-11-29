@@ -442,7 +442,7 @@ def render_options_problems_to_ack(problems):
                 {
                     "text": {
                         "type": "plain_text",
-                        "text": f"{item}",
+                        "text": f"{item}"[:74],
                         "emoji": True
                     },
                     "value": f"{problems[item]}"
@@ -524,7 +524,7 @@ def render_one_trigger_line(trigger: str, link: str, additional_message: str = '
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f"<{link}|{trigger}>\r{additional_message}"[:74]
+            "text": f"<{link}|{trigger}>\r{additional_message}"
         },
         "accessory": {
             "type": "button",
