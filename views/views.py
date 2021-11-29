@@ -1,5 +1,8 @@
 import json
 
+import functions.functions
+import settings
+
 
 def render_faq_message():
     message_body = (f"*Основной функционал бота:*\n"
@@ -191,7 +194,7 @@ def render_home_tab():
                                  f"и монтажников с доступами на узлы._"
                                  f"\n\nДоступные команды:\n  - _*/user_info*_ - открывает окно, в котором нужно ввести логин абонента, "
                                  f"в ответ получите основную информацию по нему;"
-                                 '_*Если нужно что-то добавить/убрать или остались вопросы, спросите отдел эксплуатации.*_')
+                                 '\n_*Если нужно что-то добавить/убрать или остались вопросы, спросите отдел эксплуатации.*_')
                     }
                 },
                 {
@@ -336,7 +339,7 @@ def render_speedtests_modal():
     return speedtests_bras_select_modal
 
 
-def render_empty_modal_sample():
+def render_modal_waiting():
     empty_modal = json.dumps(
         {
             "type": "modal",

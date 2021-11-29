@@ -233,7 +233,6 @@ def get_list_of_triggers(auth):
                             .replace('*', '')] = ack_link.split('=')[-1]
         return block_message, problems
 
-
 def zabbix_login(url: str):
     """
 

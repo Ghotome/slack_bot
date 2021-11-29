@@ -71,7 +71,7 @@ def shortcut_ack_problem(ack, shortcut):
 
     modal_waiting = client.views_open(
         trigger_id=shortcut['trigger_id'],
-        view=views.render_empty_modal_sample()
+        view=views.render_modal_waiting()
     )
     view_id = modal_waiting['view']['id']
     auth = functions.zabbix_login(settings.ZABBIX_API_URL)
@@ -189,7 +189,7 @@ def action_submission(ack, body):
         user_input = body['view']['state']['values'][user_response_key]['login_input']['value']
         show_empty_modal = client.views_open(
             trigger_id=trigger_id,
-            view=views.render_empty_modal_sample()
+            view=views.render_modal_waiting()
         )
         subscriber_data = functions.get_user_info(user_input)
         log.warning(f'Get info by login {user_input}: \n{subscriber_data}')
@@ -229,7 +229,7 @@ def action_submission(ack, body):
         zbbx_ack_message = f"{user_name}: {body['view']['state']['values'][message_key]['problems_to_ack_message']['value']}"
         modal_waiting = client.views_open(
             trigger_id=trigger_id,
-            view=views.render_empty_modal_sample()
+            view=views.render_modal_waiting()
         )
         view_id = modal_waiting['view']['id']
         problem_update = functions.zabbix_event_acknowledge(auth, message=zbbx_ack_message, event_id=zbbx_trigger_id)
