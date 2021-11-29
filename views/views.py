@@ -1,4 +1,5 @@
 import json
+import traceback
 
 
 def render_faq_message():
@@ -435,18 +436,21 @@ def render_options_problems_to_ack(problems):
     result = {
         "options": []
     }
-    for item in problems:
-        result['options'].append(
-            {
-                "text": {
-                    "type": "plain_text",
-                    "text": f"{item}",
-                    "emoji": True
-                },
-                "value": f"{problems[item]}"
-            }
-        )
-    return result
+    try:
+        for item in problems:
+            result['options'].append(
+                {
+                    "text": {
+                        "type": "plain_text",
+                        "text": f"{item}",
+                        "emoji": True
+                    },
+                    "value": f"{problems[item]}"
+                }
+            )
+        return result
+    except Exception as error:
+        return traceback.format_exc(error)
 
 
 def render_ack_problem_modal(options):

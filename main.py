@@ -67,25 +67,34 @@ def shortcut_ack_problem(ack, shortcut):
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                     f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON ACK - - ACK PROBLEM: \n{shortcut}")
+                       f"JSON ACK - - ACK PROBLEM MODAL OPEN: \n{shortcut}")
 
     modal_waiting = client.views_open(
         trigger_id=shortcut['trigger_id'],
         view=views.render_modal_waiting()
     )
-    view_id = modal_waiting['view']['id']
-    auth = functions.zabbix_login(settings.ZABBIX_API_URL)
-    problems = functions.get_list_of_triggers(auth)[1]
-    options = views.render_options_problems_to_ack(problems)
-    modal = views.render_ack_problem_modal(options)
-    result = client.views_update(
-        view_id=view_id,
-        view=modal
-    )
-    if settings.DEBUG:
+    try:
+        view_id = modal_waiting['view']['id']
+        auth = functions.zabbix_login(settings.ZABBIX_API_URL)
+        problems = functions.get_list_of_triggers(auth)[1]
+        options = views.render_options_problems_to_ack(problems)
+        if settings.DEBUG:
+            log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
+                           f"JSON MODAL VIEW - - CURRENT LIST OF PROBLEMS: \n{options}")
+        modal = views.render_ack_problem_modal(options)
+        result = client.views_update(
+            view_id=view_id,
+            view=modal
+        )
+        if settings.DEBUG:
+            log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
+                           f"JSON MODAL VIEW - - ACK PROBLEM MODAL RENDER FINISHED: \n{result}")
+    except Exception as error:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                        f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON MODAL VIEW - - ACK PROBLEM: \n{result}")
+                       f"JSON MODAL VIEW FINISHED WITH ERROR - - \n{traceback.format_exc(error)}")
 
 
 @app.action('login_handler')
