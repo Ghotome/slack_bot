@@ -83,6 +83,10 @@ def shortcut_ack_problem(ack, shortcut):
                            f"USER: {user}, {settings.operators[user]['name']} -- "
                            f"JSON MODAL VIEW - - CURRENT LIST OF PROBLEMS: \n{options}")
         modal = views.render_ack_problem_modal(options)
+        if settings.DEBUG:
+            log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
+                           f"USER: {user}, {settings.operators[user]['name']} -- "
+                           f"JSON MODAL VIEW - - ACK PROBLEM MODAL VIEW RENDER FINISHED: \n{modal}")
         result = client.views_update(
             view_id=view_id,
             view=modal
@@ -90,7 +94,7 @@ def shortcut_ack_problem(ack, shortcut):
         if settings.DEBUG:
             log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                            f"USER: {user}, {settings.operators[user]['name']} -- "
-                           f"JSON MODAL VIEW - - ACK PROBLEM MODAL RENDER FINISHED: \n{result}")
+                           f"JSON MODAL VIEW - - ACK PROBLEM VIEW UPDATED: \n{result}")
     except Exception as error:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                        f"USER: {user}, {settings.operators[user]['name']} -- "
