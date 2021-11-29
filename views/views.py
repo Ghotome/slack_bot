@@ -1,8 +1,5 @@
 import json
 
-import functions.functions
-import settings
-
 
 def render_faq_message():
     message_body = (f"*Основной функционал бота:*\n"
