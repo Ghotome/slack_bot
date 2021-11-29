@@ -524,7 +524,7 @@ def render_one_trigger_line(trigger: str, link: str, additional_message: str = '
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": f"<{link}|{trigger}>\r{additional_message}"
+            "text": f"<{link}|{trigger}>\r{additional_message}"[:74]
         },
         "accessory": {
             "type": "button",
