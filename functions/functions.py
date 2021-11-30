@@ -172,7 +172,7 @@ def get_list_of_triggers(auth):
                                                    "selectTags": "extend",
                                                    "searchByAny": "false",
                                                    "sortfield": [
-                                                       "triggerid",
+                                                       "eventid",
                                                        "clock"
                                                    ],
                                                    "sortorder": "ASC"
