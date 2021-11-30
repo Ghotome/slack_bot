@@ -64,7 +64,7 @@ def return_triggers_list(action, ack):
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                        f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON MESSAGE - - TRIGGERS: \n{slack_message}")
+                       f"JSON MESSAGE - - SEND TRIGGERS LIST: \n{slack_message}")
 
 
 @app.shortcut('ack_problem')
