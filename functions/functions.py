@@ -172,10 +172,11 @@ def get_list_of_triggers(auth):
                                                    "selectTags": "extend",
                                                    "searchByAny": "false",
                                                    "sortfield": [
+
                                                        "eventid",
                                                        "clock"
                                                    ],
-                                                   "sortorder": "ASC"
+                                                   "sortorder": "DESC"
                                                },
                                                "id": 4,
                                                "auth": auth
@@ -207,7 +208,7 @@ def get_list_of_triggers(auth):
                             time = f"\n*Создана:* {timestamp} назад".replace('завтра', '1 день').replace('через', '')
                             result = views.render_one_trigger_line(message_line, ack_link,
                                                                    f"{ack_message}\r{time}\n\n")
-                            block_message['blocks'].append(result)
+                            block_message['blocks'].insert(0, result)
                             problems[message_line.replace(':white_check_mark:*Проблема: ', ':white_check_mark:')
                                 .replace('*', '')] = ack_link.split('=')[-1]
                         else:
