@@ -145,7 +145,11 @@ def get_list_of_triggers(auth):
                                                  "filter": {
                                                      "value": "1",
                                                      "status": "0"
-                                                 }
+                                                 },
+                                                 "sortfield": [
+                                                     "lastchange"
+                                                 ],
+                                                 "sortorder": "ASC"
 
                                              },
                                              "id": 3,
@@ -173,11 +177,9 @@ def get_list_of_triggers(auth):
                                                    "selectTags": "extend",
                                                    "searchByAny": "false",
                                                    "sortfield": [
-
-                                                       "eventid",
                                                        "clock"
                                                    ],
-                                                   "sortorder": "DESC"
+                                                   "sortorder": "ASC"
                                                },
                                                "id": 4,
                                                "auth": auth
@@ -188,7 +190,7 @@ def get_list_of_triggers(auth):
     problems = {}
 
     if not triggers:
-        block_message['blocks'].append('Список проблем пуст.')
+        block_message['blocks'].insert(0, 'Список проблем пуст.')
         return block_message
     else:
         for trigger in triggers:
