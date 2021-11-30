@@ -145,12 +145,7 @@ def get_list_of_triggers(auth):
                                                  "filter": {
                                                      "value": "1",
                                                      "status": "0"
-                                                 },
-                                                 "sortfield": [
-                                                     "lastchange"
-                                                 ],
-                                                 "sortorder": "ASC"
-
+                                                 }
                                              },
                                              "id": 3,
                                              "auth": auth
@@ -277,7 +272,7 @@ def update_home_tab(tab, user_id, client, log):
 
     except Exception as e:
         log.error(f"Error updating home tab: {traceback.format_exc(e)}")
-
+print(get_list_of_triggers(zabbix_login(settings.ZABBIX_API_URL)))
 
 def send_photo(channel, file, client, log):
     """
