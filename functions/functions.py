@@ -272,7 +272,7 @@ def update_home_tab(tab, user_id, client, log):
 
     except Exception as e:
         log.error(f"Error updating home tab: {traceback.format_exc(e)}")
-print(get_list_of_triggers(zabbix_login(settings.ZABBIX_API_URL)))
+# print(get_list_of_triggers(zabbix_login(settings.ZABBIX_API_URL)))
 
 def send_photo(channel, file, client, log):
     """
