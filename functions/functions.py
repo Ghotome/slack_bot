@@ -276,6 +276,7 @@ def update_home_tab(tab, user_id, client, log):
         log.error(f"Error updating home tab: {traceback.format_exc(e)}")
 # print(get_list_of_triggers(zabbix_login(settings.ZABBIX_API_URL))[0])
 
+
 def send_photo(channel, file, client, log):
     """
 

@@ -245,7 +245,8 @@ def action_submission(ack, body):
 
         zbbx_trigger_id = body['view']['state']['values'][problem_values_key]['problems_to_ack']['selected_option'][
             'value']
-        zbbx_ack_message = f"{user_name}: {body['view']['state']['values'][message_key]['problems_to_ack_message']['value']}"
+        zbbx_ack_message = (f"Изменено через бота пользователем {user_name}: "
+                            f"{body['view']['state']['values'][message_key]['problems_to_ack_message']['value']}")
         modal_waiting = client.views_open(
             trigger_id=trigger_id,
             view=views.render_modal_waiting()
