@@ -156,7 +156,7 @@ def render_modal_speedtests(ack, shortcut):
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                        f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON ACK SHORTCUT - - MODAL SPEEDTESTS CHOSE: \n{shortcut}")
+                       f"JSON ACK SHORTCUT - - MODAL SPEEDTESTS MODAL: \n{shortcut}")
     result = client.views_open(
         trigger_id=shortcut['trigger_id'],
         view=views.render_speedtests_modal()
@@ -164,7 +164,7 @@ def render_modal_speedtests(ack, shortcut):
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
                        f"USER: {user}, {settings.operators[user]['name']} -- "
-                       f"JSON MODAL RENDER - - SPEEDTESTS CHOSE: \n{result}")
+                       f"JSON MODAL RENDER - - SPEEDTESTS MODAL: \n{result}")
 
 
 @app.shortcut('open_modal_user_info')
@@ -317,7 +317,7 @@ def action_missed_calls(ack, action):
                                     client=client, log=log)
     if settings.DEBUG:
         log_file.write(f"\n\n[{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%m:%S')}] - - "
-                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SENDD MESSAGE - - FAQ: \n{result}")
+                       f"USER: {user}, {settings.operators[user]['name']} -- JSON SEND MESSAGE - - FAQ: \n{result}")
 
 
 @app.action('call_statistics')
